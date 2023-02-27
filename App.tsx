@@ -1,42 +1,30 @@
-import { ThemeProvider } from "@rneui/themed";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import store from "./src/redux/store";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 import HomeScreen from "./src/screens/HomeScreen/index";
-import SettingsScreen from "./src/screens/SettingsScreen/index";
+import SettingScreen from "./src/screens/SettingsScreen/index";
 
-const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        <ThemeProvider>
-          <NavigationContainer>
-            <Tab.Navigator screenOptions={{ headerTitleAlign: "center" }}>
-              <Tab.Screen
-                name="ホーム"
-                component={HomeScreen}
-                options={{
-                  tabBarIcon: ({ color }) => (
-                    <FontAwesome name="home" size={28} color={color} />
-                  ),
-                }}
-              />
-              <Tab.Screen
-                name="設定"
-                component={SettingsScreen}
-                options={{
-                  tabBarIcon: ({ color }) => (
-                    <FontAwesome name="gear" size={28} color={color} />
-                  ),
-                }}
-              />
-            </Tab.Navigator>
-          </NavigationContainer>
-        </ThemeProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Settings"
+              component={SettingScreen}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
       </Provider>
     </SafeAreaProvider>
   );
