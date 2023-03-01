@@ -33,30 +33,33 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <ImageBackground
-          source={clearWeatherImage}
-          resizeMode="cover"
-          style={styles.weatherBackground}
+      <ImageBackground
+        source={clearWeatherImage}
+        resizeMode="cover"
+        style={styles.weatherBackground}
+      >
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(0, 0, 0, 0.1)",
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom,
+            paddingLeft: insets.left,
+            paddingRight: insets.right,
+          }}
         >
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: "rgba(0, 0, 0, 0.15)",
-              paddingTop: insets.top,
-              paddingBottom: insets.bottom,
-              paddingLeft: insets.left,
-              paddingRight: insets.right,
-            }}
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            stickyHeaderIndices={[0]}
           >
             <HomeHeader navigation={navigation} />
             <HomeMain />
             <HourlyForecast />
             <DailyForecast />
             <MoreInfo />
-          </View>
-        </ImageBackground>
-      </ScrollView>
+          </ScrollView>
+        </View>
+      </ImageBackground>
     </View>
   );
 };
