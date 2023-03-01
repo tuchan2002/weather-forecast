@@ -3,6 +3,7 @@ import { HourlyDataBlock } from "./hourly";
 import { DailyDataBlock } from "./daily";
 
 export interface Forecast {
+  city_name: string;
   lat: number;
   lon: number;
   timezone: string;

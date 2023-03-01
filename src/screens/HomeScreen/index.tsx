@@ -9,27 +9,37 @@ import HourlyForecast from "./hourly-forecast";
 import DailyForecast from "./daily-forecast";
 import MoreInfo from "./more-info";
 import axios from "axios";
-import { FullForecast } from "../../types/response/index";
+import { FullForecast } from "../../types/response";
 
 const clearWeatherImage = require("../../../assets/weather-backgrounds/01d.jpg");
 const HomeScreen = () => {
-  const [followedWeathers, setFollowedWeathers] = useState<FullForecast[]>([]);
+  const [followedWeather, setFollowedWeather] = useState<FullForecast[]>([]);
   const insets = useSafeAreaInsets();
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   useEffect(() => {
     const getFollowedWeather = async () => {
-      const response = await axios.get(
-        "https://api.openweathermap.org/data/2.5/onecall?lat=20&lon=106&exclude=minutely,alerts&appid=acbae9c57a24663635f3918fd4e8f0c7&lang=en&units=metric"
+      const cityResponse = await axios.get(
+        "http://api.openweathermap.org/geo/1.0/direct?q=ha noi&limit=&appid=acbae9c57a24663635f3918fd4e8f0c7"
       );
-      setFollowedWeathers([...followedWeathers, response.data]);
+      const weatherResponse = await axios.get(
+        `https://api.openweathermap.org/data/2.5/onecall?lat=${cityResponse.data[0].lat}&lon=${cityResponse.data[0].lon}&exclude=minutely,alerts&appid=acbae9c57a24663635f3918fd4e8f0c7&lang=en&units=metric`
+      );
+      setFollowedWeather([
+        ...followedWeather,
+        {
+          ...weatherResponse.data,
+          city_name: cityResponse.data[0].local_names["en"],
+          hourly: weatherResponse.data.hourly.slice(1, 25),
+        },
+      ]);
     };
 
     getFollowedWeather();
   }, []);
 
-  console.log(followedWeathers);
+  console.log(followedWeather[0]);
 
   return (
     <View style={styles.container}>
@@ -53,8 +63,17 @@ const HomeScreen = () => {
             stickyHeaderIndices={[0]}
           >
             <HomeHeader navigation={navigation} />
-            <HomeMain />
-            <HourlyForecast />
+            <HomeMain
+              city_name={followedWeather[0]?.city_name}
+              dt={followedWeather[0]?.current.dt}
+              icon={followedWeather[0]?.current.weather[0].icon}
+              temp={followedWeather[0]?.current.temp}
+              feels_like={followedWeather[0]?.current.feels_like}
+              description={followedWeather[0]?.current.weather[0].description}
+              sunrise={followedWeather[0]?.current.sunrise}
+              sunset={followedWeather[0]?.current.sunset}
+            />
+            <HourlyForecast hourlyForecast={followedWeather[0]?.hourly} />
             <DailyForecast />
             <MoreInfo />
           </ScrollView>
