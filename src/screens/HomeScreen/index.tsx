@@ -74,7 +74,7 @@ const HomeScreen = () => {
               sunset={followedWeather[0]?.current.sunset}
             />
             <HourlyForecast hourlyForecast={followedWeather[0]?.hourly} />
-            <DailyForecast />
+            <DailyForecast dailyForecast={followedWeather[0]?.daily} />
             <MoreInfo />
           </ScrollView>
         </View>

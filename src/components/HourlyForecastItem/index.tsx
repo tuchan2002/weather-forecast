@@ -12,7 +12,7 @@ const HourlyForecastItem = ({
 
   return (
     <View style={styles.hourlyForecastItem}>
-      <Text style={{ color: "white" }}> {moment.unix(dt).format("HH:mm")}</Text>
+      <Text style={{ color: "white" }}>{moment.unix(dt).format("HH:mm")}</Text>
       <Image
         style={{ width: 52, height: 52 }}
         source={{
