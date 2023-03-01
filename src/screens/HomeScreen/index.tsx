@@ -75,7 +75,14 @@ const HomeScreen = () => {
             />
             <HourlyForecast hourlyForecast={followedWeather[0]?.hourly} />
             <DailyForecast dailyForecast={followedWeather[0]?.daily} />
-            <MoreInfo />
+            <MoreInfo
+              wind_speed={followedWeather[0]?.current.wind_speed}
+              humidity={followedWeather[0]?.current.humidity}
+              pressure={followedWeather[0]?.current.pressure}
+              visibility={followedWeather[0]?.current.visibility}
+              clouds={followedWeather[0]?.current.clouds}
+              uvi={followedWeather[0]?.current.uvi}
+            />
           </ScrollView>
         </View>
       </ImageBackground>

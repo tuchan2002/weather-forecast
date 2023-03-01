@@ -3,7 +3,22 @@ import { StyleSheet, Text, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
 
-const MoreInfo = () => {
+interface MoreInfoProps {
+  humidity: number;
+  wind_speed: number;
+  pressure: number;
+  visibility: number;
+  clouds: number;
+  uvi: number;
+}
+const MoreInfo = ({
+  humidity,
+  wind_speed,
+  visibility,
+  pressure,
+  clouds,
+  uvi,
+}: MoreInfoProps) => {
   return (
     <View style={styles.basicInfo}>
       <View
@@ -24,7 +39,7 @@ const MoreInfo = () => {
             Humidity
           </Text>
         </View>
-        <Text style={{ color: "white", fontSize: 16 }}>49%</Text>
+        <Text style={{ color: "white", fontSize: 16 }}>{`${humidity} %`}</Text>
       </View>
 
       <View
@@ -45,7 +60,9 @@ const MoreInfo = () => {
             Pressure
           </Text>
         </View>
-        <Text style={{ color: "white", fontSize: 16 }}>1017.0</Text>
+        <Text
+          style={{ color: "white", fontSize: 16 }}
+        >{`${pressure} hPa`}</Text>
       </View>
 
       <View
@@ -66,7 +83,9 @@ const MoreInfo = () => {
             Wind Speed
           </Text>
         </View>
-        <Text style={{ color: "white", fontSize: 16 }}>30 Kph</Text>
+        <Text style={{ color: "white", fontSize: 16 }}>{`${Math.round(
+          wind_speed * 3.6
+        )} Km/s`}</Text>
       </View>
 
       <View
@@ -87,7 +106,7 @@ const MoreInfo = () => {
             Cloud
           </Text>
         </View>
-        <Text style={{ color: "white", fontSize: 16 }}>50%</Text>
+        <Text style={{ color: "white", fontSize: 16 }}>{`${clouds} Km`}</Text>
       </View>
 
       <View
@@ -108,7 +127,9 @@ const MoreInfo = () => {
             Visibility
           </Text>
         </View>
-        <Text style={{ color: "white", fontSize: 16 }}>16.0 Km</Text>
+        <Text style={{ color: "white", fontSize: 16 }}>{`${
+          visibility / 1000
+        } Km`}</Text>
       </View>
 
       <View
@@ -129,7 +150,7 @@ const MoreInfo = () => {
             UV Index
           </Text>
         </View>
-        <Text style={{ color: "white", fontSize: 16 }}>1.0</Text>
+        <Text style={{ color: "white", fontSize: 16 }}>{uvi}</Text>
       </View>
     </View>
   );
