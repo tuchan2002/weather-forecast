@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, ImageBackground, ScrollView } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import { RootStore } from "../../utils/typescript";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -10,15 +8,28 @@ import HomeMain from "./main";
 import HourlyForecast from "./hourly-forecast";
 import DailyForecast from "./daily-forecast";
 import MoreInfo from "./more-info";
+import axios from "axios";
+import { FullForecast } from "../../types/response/index";
 
 const clearWeatherImage = require("../../../assets/weather-backgrounds/01d.jpg");
 const HomeScreen = () => {
-  const { countReducer } = useSelector((state: RootStore) => state);
-  const dispatch = useDispatch();
+  const [followedWeathers, setFollowedWeathers] = useState<FullForecast[]>([]);
+  const insets = useSafeAreaInsets();
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
-  const insets = useSafeAreaInsets();
+  useEffect(() => {
+    const getFollowedWeather = async () => {
+      const response = await axios.get(
+        "https://api.openweathermap.org/data/2.5/onecall?lat=20&lon=106&exclude=minutely,alerts&appid=acbae9c57a24663635f3918fd4e8f0c7&lang=en&units=metric"
+      );
+      setFollowedWeathers([...followedWeathers, response.data]);
+    };
+
+    getFollowedWeather();
+  }, []);
+
+  console.log(followedWeathers);
 
   return (
     <View style={styles.container}>
