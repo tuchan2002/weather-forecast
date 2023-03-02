@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import GlobalStyles from "../../utils/GlobalStyles";
 import moment from "moment";
@@ -11,8 +11,8 @@ interface HomeMainProps {
   temp: number;
   feels_like: number;
   description: string;
-  sunrise: number;
-  sunset: number;
+  handleNextFollowedWeather: () => void;
+  handlePrevFollowedWeather: () => void;
 }
 const HomeMain = ({
   city_name,
@@ -21,8 +21,8 @@ const HomeMain = ({
   temp,
   feels_like,
   description,
-  sunrise,
-  sunset,
+  handleNextFollowedWeather,
+  handlePrevFollowedWeather,
 }: HomeMainProps) => {
   return (
     <View style={styles.main}>
@@ -44,19 +44,36 @@ const HomeMain = ({
         style={{
           flexDirection: "row",
           alignItems: "center",
-          marginVertical: 20,
+          justifyContent: "space-between",
+          width: "100%",
+          paddingHorizontal: 16,
         }}
       >
-        <Image
-          style={{ width: 80, height: 80 }}
-          source={{
-            uri: `https://openweathermap.org/img/wn/${icon}@2x.png`,
+        <TouchableOpacity onPress={handlePrevFollowedWeather}>
+          <Feather name="chevron-left" color="white" size={28} />
+        </TouchableOpacity>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginVertical: 20,
           }}
-        />
-        <Text style={{ color: "white", fontSize: 60 }}>{`${Math.round(
-          temp
-        )}°`}</Text>
+        >
+          <Image
+            style={{ width: 80, height: 80 }}
+            source={{
+              uri: `https://openweathermap.org/img/wn/${icon}@2x.png`,
+            }}
+          />
+          <Text style={{ color: "white", fontSize: 60 }}>{`${Math.round(
+            temp
+          )}°`}</Text>
+        </View>
+        <TouchableOpacity onPress={handleNextFollowedWeather}>
+          <Feather name="chevron-right" color="white" size={28} />
+        </TouchableOpacity>
       </View>
+
       <Text style={{ marginBottom: 6, color: "white", fontSize: 18 }}>
         {`Feels like ${Math.round(feels_like)}°`}
       </Text>
@@ -70,49 +87,6 @@ const HomeMain = ({
       >
         {description}
       </Text>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-around",
-          width: "100%",
-          marginVertical: 6,
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <Feather name="sunrise" size={24} color="white" />
-          <Text
-            style={{
-              color: "white",
-              fontSize: 16,
-              marginLeft: 6,
-            }}
-          >
-            {moment.unix(sunrise).format("HH:mm")}
-          </Text>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <Feather name="sunset" size={24} color="white" />
-          <Text
-            style={{
-              color: "white",
-              fontSize: 16,
-              marginLeft: 6,
-            }}
-          >
-            {moment.unix(sunset).format("HH:mm")}
-          </Text>
-        </View>
-      </View>
     </View>
   );
 };
