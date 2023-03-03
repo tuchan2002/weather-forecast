@@ -106,7 +106,7 @@ const MoreInfo = ({
             Cloud
           </Text>
         </View>
-        <Text style={{ color: "white", fontSize: 16 }}>{`${clouds} Km`}</Text>
+        <Text style={{ color: "white", fontSize: 16 }}>{`${clouds} %`}</Text>
       </View>
 
       <View

@@ -62,7 +62,9 @@ const HomeMain = ({
           <Image
             style={{ width: 80, height: 80 }}
             source={{
-              uri: `https://openweathermap.org/img/wn/${icon}@2x.png`,
+              uri: icon
+                ? `https://openweathermap.org/img/wn/${icon}@2x.png`
+                : "",
             }}
           />
           <Text style={{ color: "white", fontSize: 60 }}>{`${Math.round(
