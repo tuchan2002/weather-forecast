@@ -12,8 +12,8 @@ import axios from "axios";
 import { FullForecast } from "../../types/response";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { DataContext, IDataContextDefault } from "../../GlobalState";
+import { getWeatherBackground } from "../../utils/methods";
 
-const clearWeatherImage = require("../../../assets/weather-backgrounds/01d.jpg");
 const HomeScreen = () => {
   const dataStore = useContext<IDataContextDefault>(DataContext);
 
@@ -68,11 +68,13 @@ const HomeScreen = () => {
     }
   };
 
-  console.log(followedWeathers);
+  console.log(followedWeathers[followedWeatherIndex]);
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={clearWeatherImage}
+        source={getWeatherBackground(
+          followedWeathers[followedWeatherIndex]?.current.weather
+        )}
         resizeMode="cover"
         style={styles.weatherBackground}
       >
