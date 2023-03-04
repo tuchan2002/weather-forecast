@@ -5,6 +5,7 @@ import {
   ImageBackground,
   ScrollView,
   Text,
+  ActivityIndicator,
 } from "react-native";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -166,7 +167,7 @@ const HomeScreen = () => {
         </ImageBackground>
       ) : (
         <View style={styles.loading}>
-          <Text style={{ fontSize: 18 }}>LOADING...</Text>
+          <ActivityIndicator size="large" />
         </View>
       )}
     </View>
