@@ -28,7 +28,7 @@ const MoreInfo = ({
     {
       labelIcon: { iconType: IconType.Feather, iconName: "wind" },
       labelText: "Wind Speed",
-      valueText: `${Math.round(wind_speed * 3.6)} Km/s`,
+      valueText: `${Math.round(wind_speed * 3.6)} Km/h`,
     },
     {
       labelIcon: { iconType: IconType.Feather, iconName: "cloud" },
