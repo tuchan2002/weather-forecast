@@ -3,7 +3,8 @@ import { StyleSheet } from "react-native";
 const GlobalStyles = StyleSheet.create({
   defaultText: {
     color: "white",
-    fontSize: 16,
+    fontSize: 14,
+    marginBottom: 6,
   },
 });
 export default GlobalStyles;

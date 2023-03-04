@@ -28,14 +28,11 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginHorizontal: 6,
     borderRadius: 24,
-    padding: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 18,
   },
   hourlyForecastList: {
     flexGrow: 0,
-  },
-  hourlyForecastItem: {
-    alignItems: "center",
-    padding: 8,
   },
 });
 export default HourlyForecast;

@@ -26,67 +26,37 @@ const HomeMain = ({
 }: HomeMainProps) => {
   return (
     <View style={styles.main}>
-      <Text
-        style={{
-          marginBottom: 6,
-          color: "white",
-          fontWeight: "500",
-          fontSize: 18,
-        }}
-      >
+      <Text style={[GlobalStyles.defaultText, styles.cityName]}>
         {city_name}
       </Text>
-      <Text style={{ marginBottom: 6, color: "white" }}>
+      <Text style={[GlobalStyles.defaultText]}>
         {moment.unix(dt).format("ddd, DD MMMM")}
       </Text>
 
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: "100%",
-          paddingHorizontal: 16,
-        }}
-      >
+      <View style={styles.currentWeatherWrapper}>
         <TouchableOpacity onPress={handlePrevFollowedWeather}>
           <Feather name="chevron-left" color="white" size={28} />
         </TouchableOpacity>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginVertical: 20,
-          }}
-        >
+        <View style={styles.currentWeather}>
           <Image
             style={{ width: 80, height: 80 }}
             source={{
-              uri: icon
-                ? `https://openweathermap.org/img/wn/${icon}@2x.png`
-                : "",
+              uri: `https://openweathermap.org/img/wn/${icon}@2x.png`,
             }}
           />
-          <Text style={{ color: "white", fontSize: 60 }}>{`${Math.round(
-            temp
-          )}°`}</Text>
+          <Text
+            style={[GlobalStyles.defaultText, styles.currentTemp]}
+          >{`${Math.round(temp)}°`}</Text>
         </View>
         <TouchableOpacity onPress={handleNextFollowedWeather}>
           <Feather name="chevron-right" color="white" size={28} />
         </TouchableOpacity>
       </View>
 
-      <Text style={{ marginBottom: 6, color: "white", fontSize: 18 }}>
-        {`Feels like ${Math.round(feels_like)}°`}
-      </Text>
       <Text
-        style={{
-          color: "white",
-          fontSize: 18,
-          textTransform: "capitalize",
-          marginBottom: 6,
-        }}
-      >
+        style={[GlobalStyles.defaultText, styles.feelsLike]}
+      >{`Feels like ${Math.round(feels_like)}°`}</Text>
+      <Text style={[GlobalStyles.defaultText, styles.description]}>
         {description}
       </Text>
     </View>
@@ -95,6 +65,32 @@ const HomeMain = ({
 const styles = StyleSheet.create({
   main: {
     alignItems: "center",
+  },
+  cityName: {
+    fontWeight: "500",
+    fontSize: 18,
+  },
+  currentWeatherWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
+    paddingHorizontal: 16,
+  },
+  currentWeather: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 20,
+  },
+  currentTemp: {
+    fontSize: 60,
+  },
+  feelsLike: {
+    fontSize: 18,
+  },
+  description: {
+    fontSize: 18,
+    textTransform: "capitalize",
   },
 });
 export default HomeMain;

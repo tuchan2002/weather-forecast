@@ -1,5 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, View, ImageBackground, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ImageBackground,
+  ScrollView,
+  Text,
+} from "react-native";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -8,11 +14,11 @@ import HomeMain from "./main";
 import HourlyForecast from "./hourly-forecast";
 import DailyForecast from "./daily-forecast";
 import MoreInfo from "./more-info";
-import axios from "axios";
 import { FullForecast } from "../../types/response";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { DataContext, IDataContextDefault } from "../../GlobalState";
 import { getWeatherBackground } from "../../utils/methods";
+import { getCityByCityName, getWeatherByCity } from "../../utils/apis";
 
 const HomeScreen = () => {
   const dataStore = useContext<IDataContextDefault>(DataContext);
@@ -37,18 +43,17 @@ const HomeScreen = () => {
     fetchFollowedWeathers();
   }, [dataStore?.followedCities]);
 
-  const getFollowedWeather = async (city: string) => {
-    const cityResponse = await axios.get(
-      `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=&appid=acbae9c57a24663635f3918fd4e8f0c7`
-    );
-    const weatherResponse = await axios.get(
-      `https://api.openweathermap.org/data/2.5/onecall?lat=${cityResponse.data[0].lat}&lon=${cityResponse.data[0].lon}&exclude=minutely,alerts&appid=acbae9c57a24663635f3918fd4e8f0c7&lang=en&units=metric`
+  const getFollowedWeather = async (cityName: string) => {
+    const city = await getCityByCityName(cityName);
+    const weather: FullForecast = await getWeatherByCity(
+      city[0].lat,
+      city[0].lon
     );
 
     return {
-      ...weatherResponse.data,
-      city_name: cityResponse.data[0].local_names["en"],
-      hourly: weatherResponse.data.hourly.slice(1, 25),
+      ...weather,
+      city_name: city[0].local_names["en"],
+      hourly: weather.hourly.slice(1, 25),
     };
   };
 
@@ -71,100 +76,99 @@ const HomeScreen = () => {
   console.log(followedWeathers[followedWeatherIndex]);
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={getWeatherBackground(
-          followedWeathers[followedWeatherIndex]?.current.weather
-        )}
-        resizeMode="cover"
-        style={styles.weatherBackground}
-      >
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "rgba(0, 0, 0, 0.1)",
-            paddingTop: insets.top,
-            paddingBottom: insets.bottom,
-            paddingLeft: insets.left,
-            paddingRight: insets.right,
-          }}
+      {followedWeathers.length > 0 ? (
+        <ImageBackground
+          source={getWeatherBackground(
+            followedWeathers[followedWeatherIndex].current.weather
+          )}
+          resizeMode="cover"
+          style={styles.weatherBackground}
         >
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            stickyHeaderIndices={[0]}
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: "rgba(0, 0, 0, 0.1)",
+              paddingTop: insets.top,
+              paddingBottom: insets.bottom,
+              paddingLeft: insets.left,
+              paddingRight: insets.right,
+            }}
           >
-            <HomeHeader navigation={navigation} />
-
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                paddingVertical: 8,
-              }}
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              stickyHeaderIndices={[0]}
             >
-              {followedWeathers.length > 0 &&
-                followedWeathers.map((followedWeather, index) => {
-                  return index === followedWeatherIndex ? (
-                    <FontAwesome
-                      key={index}
-                      name="circle"
-                      color="white"
-                      size={6}
-                      style={{ paddingHorizontal: 6 }}
-                    />
-                  ) : (
-                    <FontAwesome
-                      key={index}
-                      name="circle-thin"
-                      color="white"
-                      size={6}
-                      style={{ paddingHorizontal: 6 }}
-                    />
-                  );
-                })}
-            </View>
-            <HomeMain
-              city_name={followedWeathers[followedWeatherIndex]?.city_name}
-              dt={followedWeathers[followedWeatherIndex]?.current.dt}
-              icon={
-                followedWeathers[followedWeatherIndex]?.current.weather[0].icon
-              }
-              temp={followedWeathers[followedWeatherIndex]?.current.temp}
-              feels_like={
-                followedWeathers[followedWeatherIndex]?.current.feels_like
-              }
-              description={
-                followedWeathers[followedWeatherIndex]?.current.weather[0]
-                  .description
-              }
-              handleNextFollowedWeather={handleNextFollowedWeather}
-              handlePrevFollowedWeather={handlePrevFollowedWeather}
-            />
-            <HourlyForecast
-              hourlyForecast={followedWeathers[followedWeatherIndex]?.hourly}
-            />
-            <DailyForecast
-              dailyForecast={followedWeathers[followedWeatherIndex]?.daily}
-            />
-            <MoreInfo
-              wind_speed={
-                followedWeathers[followedWeatherIndex]?.current.wind_speed
-              }
-              humidity={
-                followedWeathers[followedWeatherIndex]?.current.humidity
-              }
-              pressure={
-                followedWeathers[followedWeatherIndex]?.current.pressure
-              }
-              visibility={
-                followedWeathers[followedWeatherIndex]?.current.visibility
-              }
-              clouds={followedWeathers[followedWeatherIndex]?.current.clouds}
-              uvi={followedWeathers[followedWeatherIndex]?.current.uvi}
-            />
-          </ScrollView>
+              <HomeHeader navigation={navigation} />
+
+              <View style={styles.changeCityGroup}>
+                {followedWeathers.length > 0 &&
+                  followedWeathers.map((followedWeather, index) => {
+                    return index === followedWeatherIndex ? (
+                      <FontAwesome
+                        key={index}
+                        name="circle"
+                        color="white"
+                        size={6}
+                        style={{ paddingHorizontal: 6 }}
+                      />
+                    ) : (
+                      <FontAwesome
+                        key={index}
+                        name="circle-thin"
+                        color="white"
+                        size={6}
+                        style={{ paddingHorizontal: 6 }}
+                      />
+                    );
+                  })}
+              </View>
+              <HomeMain
+                city_name={followedWeathers[followedWeatherIndex].city_name}
+                dt={followedWeathers[followedWeatherIndex].current.dt}
+                icon={
+                  followedWeathers[followedWeatherIndex].current.weather[0].icon
+                }
+                temp={followedWeathers[followedWeatherIndex].current.temp}
+                feels_like={
+                  followedWeathers[followedWeatherIndex].current.feels_like
+                }
+                description={
+                  followedWeathers[followedWeatherIndex].current.weather[0]
+                    .description
+                }
+                handleNextFollowedWeather={handleNextFollowedWeather}
+                handlePrevFollowedWeather={handlePrevFollowedWeather}
+              />
+              <HourlyForecast
+                hourlyForecast={followedWeathers[followedWeatherIndex].hourly}
+              />
+              <DailyForecast
+                dailyForecast={followedWeathers[followedWeatherIndex].daily}
+              />
+              <MoreInfo
+                wind_speed={
+                  followedWeathers[followedWeatherIndex].current.wind_speed
+                }
+                humidity={
+                  followedWeathers[followedWeatherIndex].current.humidity
+                }
+                pressure={
+                  followedWeathers[followedWeatherIndex].current.pressure
+                }
+                visibility={
+                  followedWeathers[followedWeatherIndex].current.visibility
+                }
+                clouds={followedWeathers[followedWeatherIndex].current.clouds}
+                uvi={followedWeathers[followedWeatherIndex].current.uvi}
+              />
+            </ScrollView>
+          </View>
+        </ImageBackground>
+      ) : (
+        <View style={styles.loading}>
+          <Text style={{ fontSize: 18 }}>LOADING...</Text>
         </View>
-      </ImageBackground>
+      )}
     </View>
   );
 };
@@ -175,6 +179,17 @@ const styles = StyleSheet.create({
   weatherBackground: {
     flex: 1,
     width: "100%",
+  },
+  changeCityGroup: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 8,
+  },
+  loading: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 

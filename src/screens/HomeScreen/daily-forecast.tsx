@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginHorizontal: 6,
     borderRadius: 24,
-    padding: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 18,
   },
   dailyForecastList: {
     flexGrow: 0,
