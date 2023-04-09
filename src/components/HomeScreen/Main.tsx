@@ -1,26 +1,11 @@
 import React from "react";
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import GlobalStyles from "../../utils/GlobalStyles";
 import moment from "moment";
 import { HomeMainProps } from "../../types/HomeScreenComponent";
 
-const HomeMain = ({
-  dt,
-  icon,
-  temp,
-  feels_like,
-  description,
-  handleNextFollowedWeather,
-  handlePrevFollowedWeather,
-}: HomeMainProps) => {
+const HomeMain = ({ dt, icon, temp, description }: HomeMainProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.currentWeatherWrapper}>

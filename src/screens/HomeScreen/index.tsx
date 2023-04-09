@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import HomeHeader from "../../components/HomeScreen/Header";
+import HomeHeader from "../../components/HomeScreen/HomeHeader";
 import HomeMain from "../../components/HomeScreen/Main";
 import HourlyForecast from "../../components/HomeScreen/HourlyForecast";
 import DailyForecast from "../../components/HomeScreen/DailyForecast";
@@ -18,6 +18,7 @@ import { DataContext, IDataContextDefault } from "../../GlobalState";
 import { getWeatherBackground } from "../../utils/methods";
 import { getCityByCityName, getWeatherByCity } from "../../utils/apis";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import HomeBody from "./HomeBody";
 
 const HomeScreen = () => {
   const dataStore = useContext<IDataContextDefault>(DataContext);
@@ -112,47 +113,10 @@ const HomeScreen = () => {
                 followedWeatherIndex={followedWeatherIndex}
               />
 
-              <ScrollView showsVerticalScrollIndicator={false}>
-                <HomeMain
-                  dt={followedWeathers[followedWeatherIndex].current.dt}
-                  icon={
-                    followedWeathers[followedWeatherIndex].current.weather[0]
-                      .icon
-                  }
-                  temp={followedWeathers[followedWeatherIndex].current.temp}
-                  feels_like={
-                    followedWeathers[followedWeatherIndex].current.feels_like
-                  }
-                  description={
-                    followedWeathers[followedWeatherIndex].current.weather[0]
-                      .description
-                  }
-                  handleNextFollowedWeather={handleNextFollowedWeather}
-                  handlePrevFollowedWeather={handlePrevFollowedWeather}
-                />
-                <HourlyForecast
-                  hourlyForecast={followedWeathers[followedWeatherIndex].hourly}
-                />
-                <DailyForecast
-                  dailyForecast={followedWeathers[followedWeatherIndex].daily}
-                />
-                <MoreInfo
-                  wind_speed={
-                    followedWeathers[followedWeatherIndex].current.wind_speed
-                  }
-                  humidity={
-                    followedWeathers[followedWeatherIndex].current.humidity
-                  }
-                  pressure={
-                    followedWeathers[followedWeatherIndex].current.pressure
-                  }
-                  visibility={
-                    followedWeathers[followedWeatherIndex].current.visibility
-                  }
-                  clouds={followedWeathers[followedWeatherIndex].current.clouds}
-                  uvi={followedWeathers[followedWeatherIndex].current.uvi}
-                />
-              </ScrollView>
+              <HomeBody
+                followedWeathers={followedWeathers}
+                followedWeatherIndex={followedWeatherIndex}
+              />
             </View>
           </ImageBackground>
         </GestureHandlerRootView>

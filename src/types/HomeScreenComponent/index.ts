@@ -28,12 +28,13 @@ export interface IHomeHeaderProps {
   followedWeatherIndex: number;
 }
 
+export interface IHomeMainProps {
+  followedWeathers: FullForecast[];
+  followedWeatherIndex: number;
+}
 export interface HomeMainProps {
   dt: number;
   icon: string;
   temp: number;
-  feels_like: number;
   description: string;
-  handleNextFollowedWeather: () => void;
-  handlePrevFollowedWeather: () => void;
 }

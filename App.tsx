@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import HomeScreen from "./src/screens/HomeScreen/index";
 import SettingScreen from "./src/screens/SettingsScreen/index";
 import DataProvider from "./src/GlobalState";
+import ManageCitiesScreen from "./src/screens/ManageCitiesScreen";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -20,6 +21,11 @@ export default function App() {
             <Stack.Screen
               name="Settings"
               component={SettingScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="ManageCities"
+              component={ManageCitiesScreen}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

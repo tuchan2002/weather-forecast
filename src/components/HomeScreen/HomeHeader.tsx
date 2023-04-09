@@ -46,7 +46,7 @@ const HomeHeader = ({
             })}
         </View>
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+      <TouchableOpacity onPress={() => navigation.navigate("ManageCities")}>
         <Feather name="plus" size={26} color="white" />
       </TouchableOpacity>
     </View>
