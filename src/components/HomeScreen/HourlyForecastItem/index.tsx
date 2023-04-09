@@ -1,8 +1,8 @@
 import moment from "moment";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-import { HourlyDataBlock } from "../../types/response";
-import GlobalStyles from "../../utils/GlobalStyles";
+import { HourlyDataBlock } from "../../../types/response";
+import GlobalStyles from "../../../utils/GlobalStyles";
 
 const HourlyForecastItem = ({
   hourlyForecastItem,

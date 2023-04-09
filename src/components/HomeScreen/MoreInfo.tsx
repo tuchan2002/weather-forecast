@@ -1,7 +1,11 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import MoreInfoItem from "../../components/MoreInfoItem";
-import { IconType, IMoreInfoItem, IMoreInfoProps } from "../../types/more-info";
+import {
+  IconType,
+  IMoreInfoItem,
+  IMoreInfoProps,
+} from "../../types/HomeScreenComponent";
+import MoreInfoItem from "./MoreInfoItem";
 
 const MoreInfo = ({
   humidity,
@@ -53,11 +57,11 @@ const MoreInfo = ({
     ));
   };
 
-  return <View style={styles.moreInfoContainer}>{renderMoreInfoItems()}</View>;
+  return <View style={styles.container}>{renderMoreInfoItems()}</View>;
 };
 
 const styles = StyleSheet.create({
-  moreInfoContainer: {
+  container: {
     backgroundColor: "rgba(0, 0, 0, 0.25)",
     marginTop: 8,
     marginHorizontal: 6,

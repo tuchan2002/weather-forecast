@@ -7,28 +7,23 @@ import {
   Text,
   ActivityIndicator,
 } from "react-native";
-import { ParamListBase, useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import HomeHeader from "./header";
-import HomeMain from "./main";
-import HourlyForecast from "./hourly-forecast";
-import DailyForecast from "./daily-forecast";
-import MoreInfo from "./more-info";
+import HomeHeader from "../../components/HomeScreen/Header";
+import HomeMain from "../../components/HomeScreen/Main";
+import HourlyForecast from "../../components/HomeScreen/HourlyForecast";
+import DailyForecast from "../../components/HomeScreen/DailyForecast";
+import MoreInfo from "../../components/HomeScreen/MoreInfo";
 import { FullForecast } from "../../types/response";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { DataContext, IDataContextDefault } from "../../GlobalState";
 import { getWeatherBackground } from "../../utils/methods";
 import { getCityByCityName, getWeatherByCity } from "../../utils/apis";
 
 const HomeScreen = () => {
   const dataStore = useContext<IDataContextDefault>(DataContext);
+  const insets = useSafeAreaInsets();
 
   const [followedWeathers, setFollowedWeathers] = useState<FullForecast[]>([]);
   const [followedWeatherIndex, setFollowedWeatherIndex] = useState(0);
-
-  const insets = useSafeAreaInsets();
-  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   useEffect(() => {
     const fetchFollowedWeathers = async () => {
@@ -95,36 +90,14 @@ const HomeScreen = () => {
               paddingRight: insets.right,
             }}
           >
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              stickyHeaderIndices={[0]}
-            >
-              <HomeHeader navigation={navigation} />
+            <HomeHeader
+              city_name={followedWeathers[followedWeatherIndex].city_name}
+              followedWeathers={followedWeathers}
+              followedWeatherIndex={followedWeatherIndex}
+            />
 
-              <View style={styles.changeCityGroup}>
-                {followedWeathers.length > 0 &&
-                  followedWeathers.map((followedWeather, index) => {
-                    return index === followedWeatherIndex ? (
-                      <FontAwesome
-                        key={index}
-                        name="circle"
-                        color="white"
-                        size={6}
-                        style={{ paddingHorizontal: 6 }}
-                      />
-                    ) : (
-                      <FontAwesome
-                        key={index}
-                        name="circle-thin"
-                        color="white"
-                        size={6}
-                        style={{ paddingHorizontal: 6 }}
-                      />
-                    );
-                  })}
-              </View>
+            <ScrollView showsVerticalScrollIndicator={false}>
               <HomeMain
-                city_name={followedWeathers[followedWeatherIndex].city_name}
                 dt={followedWeathers[followedWeatherIndex].current.dt}
                 icon={
                   followedWeathers[followedWeatherIndex].current.weather[0].icon
@@ -180,12 +153,6 @@ const styles = StyleSheet.create({
   weatherBackground: {
     flex: 1,
     width: "100%",
-  },
-  changeCityGroup: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 8,
   },
   loading: {
     flex: 1,

@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
-import { ILabelIcon, IMoreInfoItem } from "../../types/more-info";
+import { ILabelIcon, IMoreInfoItem } from "../../../types/HomeScreenComponent";
 
 const MoreInfoItem = ({ moreInfoItem }: { moreInfoItem: IMoreInfoItem }) => {
   const { labelIcon, labelText, valueText } = moreInfoItem;

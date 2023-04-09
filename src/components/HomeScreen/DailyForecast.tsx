@@ -1,22 +1,22 @@
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import HourlyForecastItem from "../../components/HourlyForecastItem";
-import { HourlyDataBlock } from "../../types/response";
+import { DailyDataBlock } from "../../types/response";
+import DailyForecastItem from "./DailyForecastItem";
 
-const HourlyForecast = ({
-  hourlyForecast,
+const DailyForecast = ({
+  dailyForecast,
 }: {
-  hourlyForecast: HourlyDataBlock[];
+  dailyForecast: DailyDataBlock[];
 }) => {
   return (
     <View style={styles.container}>
       <FlatList
         horizontal={true}
-        style={styles.hourlyForecastList}
+        style={styles.dailyForecastList}
         showsHorizontalScrollIndicator={false}
-        data={hourlyForecast}
+        data={dailyForecast}
         renderItem={({ item }) => (
-          <HourlyForecastItem hourlyForecastItem={item} />
+          <DailyForecastItem dailyForecastItem={item} />
         )}
       />
     </View>
@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 18,
   },
-  hourlyForecastList: {
+  dailyForecastList: {
     flexGrow: 0,
   },
 });
-export default HourlyForecast;
+export default DailyForecast;
