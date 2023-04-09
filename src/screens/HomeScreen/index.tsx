@@ -17,6 +17,7 @@ import { FullForecast } from "../../types/response";
 import { DataContext, IDataContextDefault } from "../../GlobalState";
 import { getWeatherBackground } from "../../utils/methods";
 import { getCityByCityName, getWeatherByCity } from "../../utils/apis";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const HomeScreen = () => {
   const dataStore = useContext<IDataContextDefault>(DataContext);
@@ -24,6 +25,7 @@ const HomeScreen = () => {
 
   const [followedWeathers, setFollowedWeathers] = useState<FullForecast[]>([]);
   const [followedWeatherIndex, setFollowedWeatherIndex] = useState(0);
+  const [xPosition, setXPosition] = useState(0);
 
   useEffect(() => {
     const fetchFollowedWeathers = async () => {
@@ -69,75 +71,91 @@ const HomeScreen = () => {
     }
   };
 
-  console.log(followedWeathers[followedWeatherIndex]);
   return (
     <View style={styles.container}>
       {followedWeathers.length > 0 ? (
-        <ImageBackground
-          source={getWeatherBackground(
-            followedWeathers[followedWeatherIndex].current.weather
-          )}
-          resizeMode="cover"
-          style={styles.weatherBackground}
+        <GestureHandlerRootView
+          style={{ flex: 1 }}
+          onTouchStart={(e) => {
+            console.log("START", e.nativeEvent.pageX);
+            setXPosition(e.nativeEvent.pageX);
+          }}
+          onTouchEnd={(e) => {
+            console.log("END", e.nativeEvent.pageX);
+            if (xPosition - e.nativeEvent.pageX < -15) {
+              handlePrevFollowedWeather();
+            } else if (xPosition - e.nativeEvent.pageX > 15) {
+              handleNextFollowedWeather();
+            }
+          }}
         >
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: "rgba(0, 0, 0, 0.1)",
-              paddingTop: insets.top,
-              paddingBottom: insets.bottom,
-              paddingLeft: insets.left,
-              paddingRight: insets.right,
-            }}
+          <ImageBackground
+            source={getWeatherBackground(
+              followedWeathers[followedWeatherIndex].current.weather
+            )}
+            resizeMode="cover"
+            style={styles.weatherBackground}
           >
-            <HomeHeader
-              city_name={followedWeathers[followedWeatherIndex].city_name}
-              followedWeathers={followedWeathers}
-              followedWeatherIndex={followedWeatherIndex}
-            />
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: "rgba(0, 0, 0, 0.1)",
+                paddingTop: insets.top,
+                paddingBottom: insets.bottom,
+                paddingLeft: insets.left,
+                paddingRight: insets.right,
+              }}
+            >
+              <HomeHeader
+                city_name={followedWeathers[followedWeatherIndex].city_name}
+                followedWeathers={followedWeathers}
+                followedWeatherIndex={followedWeatherIndex}
+              />
 
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <HomeMain
-                dt={followedWeathers[followedWeatherIndex].current.dt}
-                icon={
-                  followedWeathers[followedWeatherIndex].current.weather[0].icon
-                }
-                temp={followedWeathers[followedWeatherIndex].current.temp}
-                feels_like={
-                  followedWeathers[followedWeatherIndex].current.feels_like
-                }
-                description={
-                  followedWeathers[followedWeatherIndex].current.weather[0]
-                    .description
-                }
-                handleNextFollowedWeather={handleNextFollowedWeather}
-                handlePrevFollowedWeather={handlePrevFollowedWeather}
-              />
-              <HourlyForecast
-                hourlyForecast={followedWeathers[followedWeatherIndex].hourly}
-              />
-              <DailyForecast
-                dailyForecast={followedWeathers[followedWeatherIndex].daily}
-              />
-              <MoreInfo
-                wind_speed={
-                  followedWeathers[followedWeatherIndex].current.wind_speed
-                }
-                humidity={
-                  followedWeathers[followedWeatherIndex].current.humidity
-                }
-                pressure={
-                  followedWeathers[followedWeatherIndex].current.pressure
-                }
-                visibility={
-                  followedWeathers[followedWeatherIndex].current.visibility
-                }
-                clouds={followedWeathers[followedWeatherIndex].current.clouds}
-                uvi={followedWeathers[followedWeatherIndex].current.uvi}
-              />
-            </ScrollView>
-          </View>
-        </ImageBackground>
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <HomeMain
+                  dt={followedWeathers[followedWeatherIndex].current.dt}
+                  icon={
+                    followedWeathers[followedWeatherIndex].current.weather[0]
+                      .icon
+                  }
+                  temp={followedWeathers[followedWeatherIndex].current.temp}
+                  feels_like={
+                    followedWeathers[followedWeatherIndex].current.feels_like
+                  }
+                  description={
+                    followedWeathers[followedWeatherIndex].current.weather[0]
+                      .description
+                  }
+                  handleNextFollowedWeather={handleNextFollowedWeather}
+                  handlePrevFollowedWeather={handlePrevFollowedWeather}
+                />
+                <HourlyForecast
+                  hourlyForecast={followedWeathers[followedWeatherIndex].hourly}
+                />
+                <DailyForecast
+                  dailyForecast={followedWeathers[followedWeatherIndex].daily}
+                />
+                <MoreInfo
+                  wind_speed={
+                    followedWeathers[followedWeatherIndex].current.wind_speed
+                  }
+                  humidity={
+                    followedWeathers[followedWeatherIndex].current.humidity
+                  }
+                  pressure={
+                    followedWeathers[followedWeatherIndex].current.pressure
+                  }
+                  visibility={
+                    followedWeathers[followedWeatherIndex].current.visibility
+                  }
+                  clouds={followedWeathers[followedWeatherIndex].current.clouds}
+                  uvi={followedWeathers[followedWeatherIndex].current.uvi}
+                />
+              </ScrollView>
+            </View>
+          </ImageBackground>
+        </GestureHandlerRootView>
       ) : (
         <View style={styles.loading}>
           <ActivityIndicator size="large" />
