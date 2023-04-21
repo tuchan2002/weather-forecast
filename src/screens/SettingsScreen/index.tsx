@@ -53,12 +53,7 @@ const SettingsScreen = () => {
         ))}
       </View>
 
-      <Button
-        onPress={() => {}}
-        title="Save"
-        color="#2196F3"
-        style={{ marginHorizontal: 20 }}
-      />
+      <Button onPress={() => {}} title="Save" color="#2196F3" style={{}} />
     </SubScreenLayout>
   );
 };
