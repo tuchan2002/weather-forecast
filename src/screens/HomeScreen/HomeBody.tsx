@@ -6,32 +6,23 @@ import HomeMain from "../../components/HomeScreen/Main";
 import MoreInfo from "../../components/HomeScreen/MoreInfo";
 import { IHomeMainProps } from "../../types/HomeScreenComponent";
 
-const HomeBody = ({
-  followedWeathers,
-  followedWeatherIndex,
-}: IHomeMainProps) => {
+const HomeBody = ({ followedWeathersSelected }: IHomeMainProps) => {
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 95 }}>
       <HomeMain
-        dt={followedWeathers[followedWeatherIndex].current.dt}
-        icon={followedWeathers[followedWeatherIndex].current.weather[0].icon}
-        temp={followedWeathers[followedWeatherIndex].current.main.temp}
-        description={
-          followedWeathers[followedWeatherIndex].current.weather[0].description
-        }
+        dt={followedWeathersSelected.current.dt}
+        icon={followedWeathersSelected.current.weather[0].icon}
+        temp={followedWeathersSelected.current.main.temp}
+        description={followedWeathersSelected.current.weather[0].description}
       />
-      <HourlyForecast
-        hourlyForecast={followedWeathers[followedWeatherIndex].hourly}
-      />
-      <DailyForecast
-        dailyForecast={followedWeathers[followedWeatherIndex].daily}
-      />
+      <HourlyForecast hourlyForecast={followedWeathersSelected.hourly} />
+      <DailyForecast dailyForecast={followedWeathersSelected.daily} />
       <MoreInfo
-        wind_speed={followedWeathers[followedWeatherIndex].current.wind.speed}
-        humidity={followedWeathers[followedWeatherIndex].current.main.humidity}
-        pressure={followedWeathers[followedWeatherIndex].current.main.pressure}
-        visibility={followedWeathers[followedWeatherIndex].current.visibility}
-        clouds={followedWeathers[followedWeatherIndex].current.clouds.all}
+        wind_speed={followedWeathersSelected.current.wind.speed}
+        humidity={followedWeathersSelected.current.main.humidity}
+        pressure={followedWeathersSelected.current.main.pressure}
+        visibility={followedWeathersSelected.current.visibility}
+        clouds={followedWeathersSelected.current.clouds.all}
       />
     </ScrollView>
   );

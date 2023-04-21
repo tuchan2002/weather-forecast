@@ -6,6 +6,9 @@ import {
   ScrollView,
   Text,
   ActivityIndicator,
+  FlatList,
+  Dimensions,
+  NativeScrollEvent,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import HomeHeader from "../../components/HomeScreen/HomeHeader";
@@ -25,13 +28,11 @@ import {
 
 const HomeScreen = () => {
   const dataStore = useContext<IDataContextDefault>(DataContext);
-  const insets = useSafeAreaInsets();
 
   const [followedWeathers, setFollowedWeathers] = useState<CustomForecast[]>(
     []
   );
   const [followedWeatherIndex, setFollowedWeatherIndex] = useState(0);
-  const [xPosition, setXPosition] = useState(0);
 
   useEffect(() => {
     const fetchFollowedWeathers = async () => {
@@ -64,70 +65,51 @@ const HomeScreen = () => {
     };
   };
 
-  const handleNextFollowedWeather = () => {
-    if (followedWeatherIndex < followedWeathers.length - 1) {
-      setFollowedWeatherIndex(followedWeatherIndex + 1);
-    } else {
-      setFollowedWeatherIndex(0);
-    }
-  };
-
-  const handlePrevFollowedWeather = () => {
-    if (followedWeatherIndex > 0) {
-      setFollowedWeatherIndex(followedWeatherIndex - 1);
-    } else {
-      setFollowedWeatherIndex(followedWeathers.length - 1);
+  const handleOnScroll = (nativeEvent: NativeScrollEvent) => {
+    if (nativeEvent) {
+      const slide = Math.ceil(
+        nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width
+      );
+      if (slide !== followedWeatherIndex) {
+        setFollowedWeatherIndex(slide);
+      }
     }
   };
 
   return (
     <View style={styles.container}>
       {followedWeathers.length > 0 ? (
-        <GestureHandlerRootView
-          style={{ flex: 1 }}
-          onTouchStart={(e) => {
-            console.log("START", xPosition);
-            setXPosition(e.nativeEvent.pageX);
-          }}
-          onTouchEnd={(e) => {
-            console.log("END", xPosition);
-            if (xPosition - e.nativeEvent.pageX < -10) {
-              handlePrevFollowedWeather();
-            } else if (xPosition - e.nativeEvent.pageX > 10) {
-              handleNextFollowedWeather();
-            }
-          }}
-        >
-          <ImageBackground
-            source={getWeatherBackground(
-              followedWeathers[followedWeatherIndex].current.weather
-            )}
-            resizeMode="cover"
-            style={styles.weatherBackground}
+        <View style={{ flex: 1 }}>
+          <HomeHeader
+            city_name={followedWeathers[followedWeatherIndex].city_name}
+            followedWeathers={followedWeathers}
+            followedWeatherIndex={followedWeatherIndex}
+          />
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled
+            onScroll={({ nativeEvent }) => handleOnScroll(nativeEvent)}
           >
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: "rgba(0, 0, 0, 0.1)",
-                paddingTop: insets.top,
-                paddingBottom: insets.bottom,
-                paddingLeft: insets.left,
-                paddingRight: insets.right,
-              }}
-            >
-              <HomeHeader
-                city_name={followedWeathers[followedWeatherIndex].city_name}
-                followedWeathers={followedWeathers}
-                followedWeatherIndex={followedWeatherIndex}
-              />
-
-              <HomeBody
-                followedWeathers={followedWeathers}
-                followedWeatherIndex={followedWeatherIndex}
-              />
-            </View>
-          </ImageBackground>
-        </GestureHandlerRootView>
+            {followedWeathers.map((item, index) => (
+              <ImageBackground
+                source={getWeatherBackground(item.current.weather)}
+                resizeMode="cover"
+                style={styles.weatherBackground}
+                key={index}
+              >
+                <View
+                  style={{
+                    flex: 1,
+                    backgroundColor: "rgba(0, 0, 0, 0.1)",
+                  }}
+                >
+                  <HomeBody followedWeathersSelected={item} />
+                </View>
+              </ImageBackground>
+            ))}
+          </ScrollView>
+        </View>
       ) : (
         <View style={styles.loading}>
           <ActivityIndicator size="large" />
@@ -142,7 +124,7 @@ const styles = StyleSheet.create({
   },
   weatherBackground: {
     flex: 1,
-    width: "100%",
+    width: Dimensions.get("window").width,
   },
   loading: {
     flex: 1,

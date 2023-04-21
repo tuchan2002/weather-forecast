@@ -29,8 +29,7 @@ export interface IHomeHeaderProps {
 }
 
 export interface IHomeMainProps {
-  followedWeathers: CustomForecast[];
-  followedWeatherIndex: number;
+  followedWeathersSelected: CustomForecast;
 }
 export interface HomeMainProps {
   dt: number;

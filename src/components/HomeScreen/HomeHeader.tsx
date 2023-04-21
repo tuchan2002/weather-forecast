@@ -3,6 +3,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import moment from "moment";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Feather from "react-native-vector-icons/Feather";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { IHomeHeaderProps } from "../../types/HomeScreenComponent";
@@ -14,51 +15,78 @@ const HomeHeader = ({
   followedWeatherIndex,
 }: IHomeHeaderProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+  const insets = useSafeAreaInsets();
 
   return (
-    <View style={styles.homeHeaderContainer}>
-      <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-        <Feather name="menu" size={26} color="white" />
-      </TouchableOpacity>
-      <View>
-        <Text style={[GlobalStyles.defaultText, styles.cityName]}>
-          {city_name}
-        </Text>
-        <View style={styles.changeCityGroup}>
-          {followedWeathers.length > 0 &&
-            followedWeathers.map((followedWeather, index) => {
-              return index === followedWeatherIndex ? (
-                <FontAwesome
-                  key={index}
-                  name="circle"
-                  color="white"
-                  size={6}
-                  style={{ paddingHorizontal: 6 }}
-                />
-              ) : (
-                <FontAwesome
-                  key={index}
-                  name="circle-thin"
-                  color="white"
-                  size={6}
-                  style={{ paddingHorizontal: 6 }}
-                />
-              );
-            })}
+    <View
+      style={[
+        styles.homeHeaderContainer,
+        {
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom,
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
+        },
+      ]}
+    >
+      <View style={styles.homeHeaderContent}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Settings")}
+          style={{ marginLeft: 24 }}
+        >
+          <Feather name="menu" size={24} color="white" />
+        </TouchableOpacity>
+        <View>
+          <Text style={[GlobalStyles.defaultText, styles.cityName]}>
+            {city_name}
+          </Text>
+          <View style={styles.changeCityGroup}>
+            {followedWeathers.length > 0 &&
+              followedWeathers.map((followedWeather, index) => {
+                return index === followedWeatherIndex ? (
+                  <FontAwesome
+                    key={index}
+                    name="circle"
+                    color="white"
+                    size={6}
+                    style={{ paddingHorizontal: 6 }}
+                  />
+                ) : (
+                  <FontAwesome
+                    key={index}
+                    name="circle-thin"
+                    color="white"
+                    size={6}
+                    style={{ paddingHorizontal: 6 }}
+                  />
+                );
+              })}
+          </View>
         </View>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("ManageCities")}
+          style={{ marginRight: 24 }}
+        >
+          <Feather name="plus" size={24} color="white" />
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate("ManageCities")}>
-        <Feather name="plus" size={26} color="white" />
-      </TouchableOpacity>
     </View>
   );
 };
 const styles = StyleSheet.create({
   homeHeaderContainer: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    width: "100%",
+    zIndex: 10,
+    height: 95,
+  },
+  homeHeaderContent: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingTop: 12,
+    alignItems: "flex-start",
+    marginTop: 16,
   },
   changeCityGroup: {
     flexDirection: "row",
