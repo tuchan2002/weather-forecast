@@ -2,14 +2,15 @@ import moment from "moment";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { DailyDataBlock } from "../../../types/response";
+import { CustomForecastBlock } from "../../../types/response/CustomForecast";
 import GlobalStyles from "../../../utils/GlobalStyles";
 
 const DailyForecastItem = ({
   dailyForecastItem,
 }: {
-  dailyForecastItem: DailyDataBlock;
+  dailyForecastItem: CustomForecastBlock;
 }) => {
-  const { dt, weather, temp } = dailyForecastItem;
+  const { dt, weather, main } = dailyForecastItem;
 
   return (
     <View style={styles.dailyForecastItem}>
@@ -27,9 +28,9 @@ const DailyForecastItem = ({
       </Text>
       <View style={styles.tempContainer}>
         <Text style={[GlobalStyles.defaultText]}>{`${Math.round(
-          temp.max
+          main.temp_max
         )}°`}</Text>
-        <Text style={[styles.minTemp]}>{`${Math.round(temp.min)}°`}</Text>
+        <Text style={[styles.minTemp]}>{`${Math.round(main.temp_min)}°`}</Text>
       </View>
     </View>
   );

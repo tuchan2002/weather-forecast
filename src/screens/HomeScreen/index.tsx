@@ -9,22 +9,27 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import HomeHeader from "../../components/HomeScreen/HomeHeader";
-import HomeMain from "../../components/HomeScreen/Main";
-import HourlyForecast from "../../components/HomeScreen/HourlyForecast";
-import DailyForecast from "../../components/HomeScreen/DailyForecast";
-import MoreInfo from "../../components/HomeScreen/MoreInfo";
-import { FullForecast } from "../../types/response";
 import { DataContext, IDataContextDefault } from "../../GlobalState";
 import { getWeatherBackground } from "../../utils/methods";
-import { getCityByCityName, getWeatherByCity } from "../../utils/apis";
+import {
+  getCityByCityName,
+  getCurrentWeatherByCity,
+  getWeatherFiveDayByCity,
+} from "../../utils/apis";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import HomeBody from "./HomeBody";
+import {
+  CustomForecast,
+  CustomForecastBlock,
+} from "../../types/response/CustomForecast";
 
 const HomeScreen = () => {
   const dataStore = useContext<IDataContextDefault>(DataContext);
   const insets = useSafeAreaInsets();
 
-  const [followedWeathers, setFollowedWeathers] = useState<FullForecast[]>([]);
+  const [followedWeathers, setFollowedWeathers] = useState<CustomForecast[]>(
+    []
+  );
   const [followedWeatherIndex, setFollowedWeatherIndex] = useState(0);
   const [xPosition, setXPosition] = useState(0);
 
@@ -34,7 +39,7 @@ const HomeScreen = () => {
         (followedCity) => getFollowedWeather(followedCity)
       );
 
-      const followedWeathersArray = await Promise.all(
+      const followedWeathersArray: CustomForecast[] = await Promise.all(
         followedWeathersPromiseArray
       );
       setFollowedWeathers([...followedWeathersArray]);
@@ -44,15 +49,18 @@ const HomeScreen = () => {
 
   const getFollowedWeather = async (cityName: string) => {
     const city = await getCityByCityName(cityName);
-    const weather: FullForecast = await getWeatherByCity(
+    const fiveDayForecastWeather: CustomForecastBlock[] =
+      await getWeatherFiveDayByCity(city[0].lat, city[0].lon);
+    const currentWeather: CustomForecastBlock = await getCurrentWeatherByCity(
       city[0].lat,
       city[0].lon
     );
 
     return {
-      ...weather,
       city_name: city[0].local_names["en"],
-      hourly: weather.hourly.slice(1, 25),
+      current: currentWeather,
+      hourly: fiveDayForecastWeather.slice(0, 9),
+      daily: fiveDayForecastWeather.filter((item, index) => index % 8 === 0),
     };
   };
 
@@ -78,14 +86,14 @@ const HomeScreen = () => {
         <GestureHandlerRootView
           style={{ flex: 1 }}
           onTouchStart={(e) => {
-            console.log("START", e.nativeEvent.pageX);
+            console.log("START", xPosition);
             setXPosition(e.nativeEvent.pageX);
           }}
           onTouchEnd={(e) => {
-            console.log("END", e.nativeEvent.pageX);
-            if (xPosition - e.nativeEvent.pageX < -15) {
+            console.log("END", xPosition);
+            if (xPosition - e.nativeEvent.pageX < -10) {
               handlePrevFollowedWeather();
-            } else if (xPosition - e.nativeEvent.pageX > 15) {
+            } else if (xPosition - e.nativeEvent.pageX > 10) {
               handleNextFollowedWeather();
             }
           }}

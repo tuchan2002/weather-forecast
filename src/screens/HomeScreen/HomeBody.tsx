@@ -15,7 +15,7 @@ const HomeBody = ({
       <HomeMain
         dt={followedWeathers[followedWeatherIndex].current.dt}
         icon={followedWeathers[followedWeatherIndex].current.weather[0].icon}
-        temp={followedWeathers[followedWeatherIndex].current.temp}
+        temp={followedWeathers[followedWeatherIndex].current.main.temp}
         description={
           followedWeathers[followedWeatherIndex].current.weather[0].description
         }
@@ -27,12 +27,11 @@ const HomeBody = ({
         dailyForecast={followedWeathers[followedWeatherIndex].daily}
       />
       <MoreInfo
-        wind_speed={followedWeathers[followedWeatherIndex].current.wind_speed}
-        humidity={followedWeathers[followedWeatherIndex].current.humidity}
-        pressure={followedWeathers[followedWeatherIndex].current.pressure}
+        wind_speed={followedWeathers[followedWeatherIndex].current.wind.speed}
+        humidity={followedWeathers[followedWeatherIndex].current.main.humidity}
+        pressure={followedWeathers[followedWeatherIndex].current.main.pressure}
         visibility={followedWeathers[followedWeatherIndex].current.visibility}
-        clouds={followedWeathers[followedWeatherIndex].current.clouds}
-        uvi={followedWeathers[followedWeatherIndex].current.uvi}
+        clouds={followedWeathers[followedWeatherIndex].current.clouds.all}
       />
     </ScrollView>
   );

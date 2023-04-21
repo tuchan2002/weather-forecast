@@ -2,14 +2,15 @@ import moment from "moment";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { HourlyDataBlock } from "../../../types/response";
+import { CustomForecastBlock } from "../../../types/response/CustomForecast";
 import GlobalStyles from "../../../utils/GlobalStyles";
 
 const HourlyForecastItem = ({
   hourlyForecastItem,
 }: {
-  hourlyForecastItem: HourlyDataBlock;
+  hourlyForecastItem: CustomForecastBlock;
 }) => {
-  const { dt, weather, temp } = hourlyForecastItem;
+  const { dt, weather, main } = hourlyForecastItem;
 
   return (
     <View style={styles.hourlyForecastItem}>
@@ -20,7 +21,9 @@ const HourlyForecastItem = ({
           uri: `https://openweathermap.org/img/wn/${weather[0].icon}@2x.png`,
         }}
       />
-      <Text style={[GlobalStyles.defaultText]}>{`${Math.round(temp)}°`}</Text>
+      <Text style={[GlobalStyles.defaultText]}>{`${Math.round(
+        main.temp
+      )}°`}</Text>
     </View>
   );
 };

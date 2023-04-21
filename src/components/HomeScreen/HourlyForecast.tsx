@@ -1,12 +1,13 @@
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { HourlyDataBlock } from "../../types/response";
+import { CustomForecastBlock } from "../../types/response/CustomForecast";
 import HourlyForecastItem from "./HourlyForecastItem";
 
 const HourlyForecast = ({
   hourlyForecast,
 }: {
-  hourlyForecast: HourlyDataBlock[];
+  hourlyForecast: CustomForecastBlock[];
 }) => {
   return (
     <View style={styles.container}>
