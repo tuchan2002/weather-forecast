@@ -5,12 +5,12 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import FollowedCityItem from "../../components/ManageCitiesScreen/FollowedCityItem";
 import { DataContext, IDataContextDefault } from "../../GlobalState";
 import SubScreenLayout from "../../layouts/SubScreenLayout";
-import { FullForecast } from "../../types/response";
 import {
   CustomForecast,
   CustomForecastBlock,
@@ -18,9 +18,11 @@ import {
 import {
   getCityByCityName,
   getCurrentWeatherByCity,
-  getWeatherByCity,
   getWeatherFiveDayByCity,
 } from "../../utils/apis";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 const ManageCitiesScreen = () => {
   const dataStore = useContext<IDataContextDefault>(DataContext);
@@ -28,9 +30,7 @@ const ManageCitiesScreen = () => {
   const [followedWeathers, setFollowedWeathers] = useState<CustomForecast[]>(
     []
   );
-  const [cityNameSearch, setCityNameSearch] = useState("");
-
-  const searchBarEl = useRef(null);
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   useEffect(() => {
     const fetchFollowedWeathers = async () => {
@@ -63,27 +63,20 @@ const ManageCitiesScreen = () => {
     };
   };
 
-  const updateCityNameSearch = (cityNameSearch: string) => {
-    setCityNameSearch(cityNameSearch);
-  };
-
-  const handleSubmitSearchBar = async () => {
-    const city = await getCityByCityName(cityNameSearch);
-    console.log(city);
-  };
-
   return (
     <SubScreenLayout title="Manage Cities">
       <View style={{ flex: 1 }}>
-        <SearchBar
-          placeholder="Enter location"
-          onChangeText={updateCityNameSearch}
-          value={cityNameSearch}
-          platform="android"
-          containerStyle={{ borderRadius: 100, paddingHorizontal: 8 }}
-          ref={searchBarEl}
-          onSubmitEditing={handleSubmitSearchBar}
-        />
+        <TouchableOpacity
+          onPress={() => navigation.navigate("SearchCity")}
+          activeOpacity={1}
+        >
+          <View style={styles.searchInput}>
+            <Ionicons name="search" size={22} color="gray" />
+            <Text style={{ color: "gray", fontSize: 16, marginLeft: 18 }}>
+              Enter location
+            </Text>
+          </View>
+        </TouchableOpacity>
 
         {followedWeathers.length > 0 ? (
           <ScrollView
@@ -115,6 +108,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  searchInput: {
+    backgroundColor: "white",
+    borderRadius: 100,
+    padding: 20,
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
 
