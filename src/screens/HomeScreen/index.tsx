@@ -19,7 +19,6 @@ import {
   getCurrentWeatherByCity,
   getWeatherFiveDayByCity,
 } from "../../utils/apis";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import HomeBody from "./HomeBody";
 import {
   CustomForecast,

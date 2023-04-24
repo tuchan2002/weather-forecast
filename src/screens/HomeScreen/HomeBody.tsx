@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView } from "react-native";
 import DailyForecast from "../../components/HomeScreen/DailyForecast";
 import HourlyForecast from "../../components/HomeScreen/HourlyForecast";
 import HomeMain from "../../components/HomeScreen/Main";

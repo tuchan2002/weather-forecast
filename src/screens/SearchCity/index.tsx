@@ -122,50 +122,60 @@ const SearchCityScreen = () => {
       {searchedForecastWeather.length > 0 && (
         <View style={{ flex: 1, paddingHorizontal: 16, marginTop: 24 }}>
           {!loading ? (
-            <View
-              style={{
-                backgroundColor: "white",
-                borderRadius: 12,
-                paddingHorizontal: 14,
-                paddingVertical: 18,
-              }}
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("CityDetail", {
+                  searchedForecastWeather,
+                })
+              }
+              activeOpacity={0.5}
             >
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
+                  backgroundColor: "white",
+                  borderRadius: 12,
+                  paddingHorizontal: 14,
+                  paddingVertical: 18,
                 }}
               >
-                <Text style={{ fontSize: 18 }}>
-                  {searchedForecastWeather[0].city_name}
-                </Text>
-                <Text style={{ fontSize: 16, color: "gray" }}>Added</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={{ fontSize: 18 }}>
+                    {searchedForecastWeather[0].city_name}
+                  </Text>
+                  <Text style={{ fontSize: 16, color: "gray" }}>Added</Text>
+                </View>
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginTop: 24,
+                    marginHorizontal: -16,
+                  }}
+                >
+                  {searchedForecastWeather[0].daily.map((item, index) => (
+                    <View style={styles.dailyForecastItem} key={index}>
+                      <Text>{moment.unix(item.dt).format("ddd")}</Text>
+                      <Image
+                        style={{ width: 52, height: 52 }}
+                        source={{
+                          uri: `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`,
+                        }}
+                      />
+                      <Text style={{ marginVertical: 10 }}>{`${Math.round(
+                        item.main.temp_max
+                      )}°`}</Text>
+                      <Text>{`${Math.round(item.main.temp_min)}°`}</Text>
+                    </View>
+                  ))}
+                </View>
               </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  marginTop: 24,
-                  marginHorizontal: -16,
-                }}
-              >
-                {searchedForecastWeather[0].daily.map((item, index) => (
-                  <View style={styles.dailyForecastItem} key={index}>
-                    <Text>{moment.unix(item.dt).format("ddd")}</Text>
-                    <Image
-                      style={{ width: 52, height: 52 }}
-                      source={{
-                        uri: `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`,
-                      }}
-                    />
-                    <Text style={{ marginVertical: 10 }}>{`${Math.round(
-                      item.main.temp_max
-                    )}°`}</Text>
-                    <Text>{`${Math.round(item.main.temp_min)}°`}</Text>
-                  </View>
-                ))}
-              </View>
-            </View>
+            </TouchableOpacity>
           ) : (
             <View style={styles.loading}>
               <ActivityIndicator size="large" />
