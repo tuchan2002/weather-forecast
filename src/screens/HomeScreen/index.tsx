@@ -24,14 +24,43 @@ import {
   CustomForecast,
   CustomForecastBlock,
 } from "../../types/response/CustomForecast";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomeScreen = () => {
   const dataStore = useContext<IDataContextDefault>(DataContext);
+  const { setLanguage, setTempUnit, setFollowedCities } = dataStore;
 
   const [followedWeathers, setFollowedWeathers] = useState<CustomForecast[]>(
     []
   );
   const [followedWeatherIndex, setFollowedWeatherIndex] = useState(0);
+
+  useEffect(() => {
+    const setGlobalState = async () => {
+      try {
+        // await AsyncStorage.setItem(
+        //   "@weatherForecast",
+        //   JSON.stringify({
+        //     language: "en",
+        //     tempUnit: "metric",
+        //     followedCities: [],
+        //   })
+        // );
+
+        const globalStateJson = await AsyncStorage.getItem("@weatherForecast");
+        const globalState = JSON.parse(globalStateJson || "");
+        const { language, tempUnit, followedCities } = globalState;
+
+        setLanguage(language);
+        setTempUnit(tempUnit);
+        setFollowedCities(followedCities);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    setGlobalState();
+  }, []);
 
   useEffect(() => {
     const fetchFollowedWeathers = async () => {

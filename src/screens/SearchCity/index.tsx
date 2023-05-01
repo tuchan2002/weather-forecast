@@ -2,9 +2,10 @@ import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { SearchBar, Text } from "@rneui/themed";
 import moment from "moment";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Button,
   Dimensions,
   Image,
@@ -20,10 +21,16 @@ import {
 } from "../../types/response/CustomForecast";
 import { getCityByCityName, getWeatherFiveDayByCity } from "../../utils/apis";
 import GlobalStyles from "../../utils/GlobalStyles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { DataContext, IDataContextDefault } from "../../GlobalState";
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 const SearchCityScreen = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
+  const dataStore = useContext<IDataContextDefault>(DataContext);
+  const { followedCities, setFollowedCities } = dataStore;
 
   const [cityNameSearch, setCityNameSearch] = useState("");
   const [searchedForecastWeather, setSearchedForecastWeather] = useState<
@@ -68,7 +75,23 @@ const SearchCityScreen = () => {
     ]);
   };
 
-  console.log(!cityNameSearch.trim());
+  const handleAddCity = async () => {
+    const newFollowCities = [
+      ...followedCities,
+      searchedForecastWeather[0].city_name,
+    ];
+    setFollowedCities(newFollowCities);
+
+    await AsyncStorage.setItem(
+      "@weatherForecast",
+      JSON.stringify({
+        language: "en",
+        tempUnit: "metric",
+        followedCities: newFollowCities,
+      })
+    );
+    Alert.alert(searchedForecastWeather[0].city_name);
+  };
 
   return (
     <View
@@ -147,7 +170,18 @@ const SearchCityScreen = () => {
                   <Text style={{ fontSize: 18 }}>
                     {searchedForecastWeather[0].city_name}
                   </Text>
-                  <Text style={{ fontSize: 16, color: "gray" }}>Added</Text>
+                  {followedCities.includes(
+                    searchedForecastWeather[0].city_name
+                  ) ? (
+                    <Text style={{ fontSize: 16, color: "gray" }}>Added</Text>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={() => handleAddCity()}
+                      style={{ marginBottom: 12 }}
+                    >
+                      <AntDesign name="pluscircle" size={30} color="#000" />
+                    </TouchableOpacity>
+                  )}
                 </View>
 
                 <View

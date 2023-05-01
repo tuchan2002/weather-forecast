@@ -63,6 +63,8 @@ const ManageCitiesScreen = () => {
     };
   };
 
+  console.log(followedWeathers);
+
   return (
     <SubScreenLayout title="Manage Cities">
       <View style={{ flex: 1 }}>

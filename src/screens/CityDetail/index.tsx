@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import SubScreenLayout from "../../layouts/SubScreenLayout";
 import { Dimensions } from "react-native";
@@ -12,6 +12,7 @@ import { CustomForecastSearchCity } from "../../types/response/CustomForecast";
 import moment from "moment";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import { DataContext, IDataContextDefault } from "../../GlobalState";
 
 const chartConfig = {
   backgroundColor: "#f2f2f2",
@@ -33,6 +34,9 @@ const CityDetail = ({
   }>;
 }) => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
+  const dataStore = useContext<IDataContextDefault>(DataContext);
+  const { followedCities, setFollowedCities } = dataStore;
 
   const { searchedForecastWeather } = route.params;
   console.log(searchedForecastWeather);
@@ -66,15 +70,18 @@ const CityDetail = ({
           fromZero={true}
           yAxisSuffix=" °"
         />
-        <View style={{ alignItems: "center" }}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Home")}
-            style={{ marginBottom: 12 }}
-          >
-            <AntDesign name="rightcircle" size={36} color="#000" />
-          </TouchableOpacity>
-          <Text>View on Home screen</Text>
-        </View>
+
+        {followedCities.includes(searchedForecastWeather[0].city_name) && (
+          <View style={{ alignItems: "center" }}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Home")}
+              style={{ marginBottom: 12 }}
+            >
+              <AntDesign name="rightcircle" size={36} color="#000" />
+            </TouchableOpacity>
+            <Text>View on Home screen</Text>
+          </View>
+        )}
       </View>
     </SubScreenLayout>
   );

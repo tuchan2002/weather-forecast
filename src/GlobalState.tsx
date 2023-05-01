@@ -20,13 +20,7 @@ export const DataContext = createContext<IDataContextDefault>(
 );
 
 export default function DataProvider({ children }: IDataContextProps) {
-  const [followedCities, setFollowedCities] = useState([
-    "ha noi",
-    "greenland",
-    "ho chi minh",
-    "tokyo",
-    "new york",
-  ]);
+  const [followedCities, setFollowedCities] = useState<string[]>([]);
   const [language, setLanguage] = useState("en");
   const [tempUnit, setTempUnit] = useState("metric");
 
