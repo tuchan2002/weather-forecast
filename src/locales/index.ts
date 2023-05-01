@@ -22,6 +22,7 @@ const languageData = {
     added: "Added",
     enterLocation: "Enter location",
     temperature: "Temperature",
+    noResults: "No Results",
   },
   vi: {
     windSpeed: "Tốc độ gió",
@@ -47,6 +48,7 @@ const languageData = {
     added: "Đã thêm",
     enterLocation: "Nhập vị trí",
     temperature: "Nhiệt độ",
+    noResults: "Không có kết quả nào",
   },
 };
 
