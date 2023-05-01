@@ -20,13 +20,19 @@ export const getWeatherBackground = (weather: WeatherBlock[]) => {
   return weatherBackgrounds[weather[0].icon as WeatherBackgroundsKey];
 };
 
-export const getFullWeatherByCityName = async (cityName: string) => {
+export const getFullWeatherByCityName = async (
+  cityName: string,
+  lang: string,
+  units: string
+) => {
   const city = await getCityByCityName(cityName);
   const fiveDayForecastWeather: CustomForecastBlock[] =
-    await getWeatherFiveDayByCity(city[0].lat, city[0].lon);
+    await getWeatherFiveDayByCity(city[0].lat, city[0].lon, lang, units);
   const currentWeather: CustomForecastBlock = await getCurrentWeatherByCity(
     city[0].lat,
-    city[0].lon
+    city[0].lon,
+    lang,
+    units
   );
 
   return {

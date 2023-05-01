@@ -28,6 +28,8 @@ const HomeScreen = () => {
     setFollowedCities,
     setCurrentCity,
     currentCity,
+    language,
+    tempUnit,
   } = dataStore;
 
   const [followedWeathers, setFollowedWeathers] = useState<CustomForecast[]>(
@@ -45,10 +47,10 @@ const HomeScreen = () => {
         //     language: "en",
         //     tempUnit: "metric",
         //     followedCities: [],
-        //     currentCity: {},
         //   })
         // );
 
+        // set app setting
         const globalStateJson = await AsyncStorage.getItem("@weatherForecast");
         const globalState = JSON.parse(globalStateJson || "");
         const { language, tempUnit, followedCities } = globalState;
@@ -67,6 +69,7 @@ const HomeScreen = () => {
   useEffect(() => {
     const fetchFollowedWeathers = async () => {
       // set current city
+      console.log("Location loading...");
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         console.log("Permission to access location was denied");
@@ -83,7 +86,7 @@ const HomeScreen = () => {
       const allOfCities = [currentCity[0].name, ...dataStore?.followedCities];
       console.log("allOfCities", allOfCities);
       const followedWeathersPromiseArray = allOfCities.map((followedCity) =>
-        getFullWeatherByCityName(followedCity)
+        getFullWeatherByCityName(followedCity, language, tempUnit)
       );
 
       const followedWeathersArray: CustomForecast[] = await Promise.all(
@@ -92,9 +95,7 @@ const HomeScreen = () => {
       setFollowedWeathers([...followedWeathersArray]);
     };
     fetchFollowedWeathers();
-  }, [dataStore?.followedCities]);
-
-  console.log(dataStore?.followedCities);
+  }, [dataStore?.followedCities, language, tempUnit]);
 
   const handleOnScroll = (nativeEvent: NativeScrollEvent) => {
     if (nativeEvent) {

@@ -36,10 +36,15 @@ export const getWeatherByCity = async (lat: number, lon: number) => {
   }
 };
 
-export const getWeatherFiveDayByCity = async (lat: number, lon: number) => {
+export const getWeatherFiveDayByCity = async (
+  lat: number,
+  lon: number,
+  lang: string,
+  units: string
+) => {
   try {
     const response = await axios.get(
-      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&lang=en&units=metric`
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&lang=${lang}&units=${units}`
     );
 
     return response.data.list;
@@ -48,10 +53,15 @@ export const getWeatherFiveDayByCity = async (lat: number, lon: number) => {
   }
 };
 
-export const getCurrentWeatherByCity = async (lat: number, lon: number) => {
+export const getCurrentWeatherByCity = async (
+  lat: number,
+  lon: number,
+  lang: string,
+  units: string
+) => {
   try {
     const response = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&lang=en&units=metric`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&lang=${lang}&units=${units}`
     );
 
     return response.data;

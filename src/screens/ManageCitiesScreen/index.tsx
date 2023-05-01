@@ -16,10 +16,11 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { getFullWeatherByCityName } from "../../utils/methods";
+import { translate } from "../../locales";
 
 const ManageCitiesScreen = () => {
   const dataStore = useContext<IDataContextDefault>(DataContext);
-  const { currentCity } = dataStore;
+  const { currentCity, language, tempUnit } = dataStore;
 
   const [followedWeathers, setFollowedWeathers] = useState<CustomForecast[]>(
     []
@@ -31,7 +32,9 @@ const ManageCitiesScreen = () => {
       const followedWeathersPromiseArray = [
         currentCity,
         ...dataStore?.followedCities,
-      ].map((followedCity) => getFullWeatherByCityName(followedCity));
+      ].map((followedCity) =>
+        getFullWeatherByCityName(followedCity, language, tempUnit)
+      );
 
       const followedWeathersArray: CustomForecast[] = await Promise.all(
         followedWeathersPromiseArray
@@ -42,7 +45,7 @@ const ManageCitiesScreen = () => {
   }, [dataStore?.followedCities]);
 
   return (
-    <SubScreenLayout title="Manage Cities">
+    <SubScreenLayout title={translate(language).manageCities}>
       <View style={{ flex: 1 }}>
         <TouchableOpacity
           onPress={() => navigation.navigate("SearchCity")}
@@ -51,7 +54,7 @@ const ManageCitiesScreen = () => {
           <View style={styles.searchInput}>
             <Ionicons name="search" size={22} color="gray" />
             <Text style={{ color: "gray", fontSize: 16, marginLeft: 18 }}>
-              Enter location
+              {translate(language).enterLocation}
             </Text>
           </View>
         </TouchableOpacity>

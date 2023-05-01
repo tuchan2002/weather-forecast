@@ -13,6 +13,7 @@ import moment from "moment";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { DataContext, IDataContextDefault } from "../../GlobalState";
+import { translate } from "../../locales";
 
 const chartConfig = {
   backgroundColor: "#f2f2f2",
@@ -36,10 +37,10 @@ const CityDetail = ({
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const dataStore = useContext<IDataContextDefault>(DataContext);
-  const { followedCities, setFollowedCities, currentCity } = dataStore;
+  const { followedCities, setFollowedCities, currentCity, language } =
+    dataStore;
 
   const { searchedForecastWeather } = route.params;
-  console.log(searchedForecastWeather);
 
   const data = {
     labels: searchedForecastWeather[0].daily.map((item) =>
@@ -52,7 +53,7 @@ const CityDetail = ({
         strokeWidth: 2,
       },
     ],
-    legend: [" Temperature"],
+    legend: [` ${translate(language).temperature}`],
   };
 
   return (
@@ -81,7 +82,7 @@ const CityDetail = ({
             >
               <AntDesign name="rightcircle" size={36} color="#000" />
             </TouchableOpacity>
-            <Text>View on Home screen</Text>
+            <Text>{translate(language).viewOnHomeScreen}</Text>
           </View>
         )}
       </View>

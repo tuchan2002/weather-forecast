@@ -24,13 +24,15 @@ import GlobalStyles from "../../utils/GlobalStyles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DataContext, IDataContextDefault } from "../../GlobalState";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import { translate } from "../../locales";
 
 const SearchCityScreen = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const dataStore = useContext<IDataContextDefault>(DataContext);
-  const { followedCities, setFollowedCities, currentCity } = dataStore;
+  const { followedCities, setFollowedCities, currentCity, language, tempUnit } =
+    dataStore;
 
   const [cityNameSearch, setCityNameSearch] = useState("");
   const [searchedForecastWeather, setSearchedForecastWeather] = useState<
@@ -59,7 +61,12 @@ const SearchCityScreen = () => {
     }
 
     const fiveDayForecastWeather: CustomForecastBlock[] =
-      await getWeatherFiveDayByCity(city[0].lat, city[0].lon);
+      await getWeatherFiveDayByCity(
+        city[0].lat,
+        city[0].lon,
+        language,
+        tempUnit
+      );
 
     setLoading(false);
 
@@ -113,7 +120,7 @@ const SearchCityScreen = () => {
         }}
       >
         <SearchBar
-          placeholder="Enter location"
+          placeholder={translate(language).enterLocation}
           onChangeText={updateCityNameSearch}
           value={cityNameSearch}
           platform="android"
@@ -138,7 +145,7 @@ const SearchCityScreen = () => {
               marginLeft: 14,
             }}
           >
-            Cancel
+            {translate(language).cancel}
           </Text>
         </TouchableOpacity>
       </View>
@@ -173,7 +180,9 @@ const SearchCityScreen = () => {
                   {[currentCity, ...followedCities].includes(
                     searchedForecastWeather[0].city_name
                   ) ? (
-                    <Text style={{ fontSize: 16, color: "gray" }}>Added</Text>
+                    <Text style={{ fontSize: 16, color: "gray" }}>
+                      {translate(language).added}
+                    </Text>
                   ) : (
                     <TouchableOpacity
                       onPress={() => handleAddCity()}
