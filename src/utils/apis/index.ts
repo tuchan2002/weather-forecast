@@ -13,6 +13,17 @@ export const getCityByCityName = async (cityName: string) => {
   }
 };
 
+export const getCityByCoordinates = async (lat: number, lon: number) => {
+  try {
+    const response = await axios.get(
+      `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=5&appid=${apiKey}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getWeatherByCity = async (lat: number, lon: number) => {
   try {
     const response = await axios.get(

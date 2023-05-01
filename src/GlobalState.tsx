@@ -13,6 +13,8 @@ export interface IDataContextDefault {
   setTempUnit: React.Dispatch<React.SetStateAction<string>>;
   followedCities: string[];
   setFollowedCities: React.Dispatch<React.SetStateAction<string[]>>;
+  currentCity: string;
+  setCurrentCity: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const DataContext = createContext<IDataContextDefault>(
@@ -23,6 +25,7 @@ export default function DataProvider({ children }: IDataContextProps) {
   const [followedCities, setFollowedCities] = useState<string[]>([]);
   const [language, setLanguage] = useState("en");
   const [tempUnit, setTempUnit] = useState("metric");
+  const [currentCity, setCurrentCity] = useState<string>("");
 
   const contextData = {
     language,
@@ -31,6 +34,8 @@ export default function DataProvider({ children }: IDataContextProps) {
     setTempUnit,
     followedCities,
     setFollowedCities,
+    currentCity,
+    setCurrentCity,
   };
 
   return (

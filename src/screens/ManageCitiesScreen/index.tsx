@@ -11,21 +11,15 @@ import {
 import FollowedCityItem from "../../components/ManageCitiesScreen/FollowedCityItem";
 import { DataContext, IDataContextDefault } from "../../GlobalState";
 import SubScreenLayout from "../../layouts/SubScreenLayout";
-import {
-  CustomForecast,
-  CustomForecastBlock,
-} from "../../types/response/CustomForecast";
-import {
-  getCityByCityName,
-  getCurrentWeatherByCity,
-  getWeatherFiveDayByCity,
-} from "../../utils/apis";
+import { CustomForecast } from "../../types/response/CustomForecast";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { getFullWeatherByCityName } from "../../utils/methods";
 
 const ManageCitiesScreen = () => {
   const dataStore = useContext<IDataContextDefault>(DataContext);
+  const { currentCity } = dataStore;
 
   const [followedWeathers, setFollowedWeathers] = useState<CustomForecast[]>(
     []
@@ -34,9 +28,10 @@ const ManageCitiesScreen = () => {
 
   useEffect(() => {
     const fetchFollowedWeathers = async () => {
-      const followedWeathersPromiseArray = dataStore?.followedCities.map(
-        (followedCity) => getFollowedWeather(followedCity)
-      );
+      const followedWeathersPromiseArray = [
+        currentCity,
+        ...dataStore?.followedCities,
+      ].map((followedCity) => getFullWeatherByCityName(followedCity));
 
       const followedWeathersArray: CustomForecast[] = await Promise.all(
         followedWeathersPromiseArray
@@ -45,25 +40,6 @@ const ManageCitiesScreen = () => {
     };
     fetchFollowedWeathers();
   }, [dataStore?.followedCities]);
-
-  const getFollowedWeather = async (cityName: string) => {
-    const city = await getCityByCityName(cityName);
-    const fiveDayForecastWeather: CustomForecastBlock[] =
-      await getWeatherFiveDayByCity(city[0].lat, city[0].lon);
-    const currentWeather: CustomForecastBlock = await getCurrentWeatherByCity(
-      city[0].lat,
-      city[0].lon
-    );
-
-    return {
-      city_name: city[0].local_names["en"],
-      current: currentWeather,
-      hourly: fiveDayForecastWeather.slice(0, 9),
-      daily: fiveDayForecastWeather.filter((item, index) => index % 8 === 0),
-    };
-  };
-
-  console.log(followedWeathers);
 
   return (
     <SubScreenLayout title="Manage Cities">

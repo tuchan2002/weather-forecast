@@ -4,35 +4,36 @@ import {
   View,
   ImageBackground,
   ScrollView,
-  Text,
   ActivityIndicator,
-  FlatList,
   Dimensions,
   NativeScrollEvent,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import HomeHeader from "../../components/HomeScreen/HomeHeader";
 import { DataContext, IDataContextDefault } from "../../GlobalState";
-import { getWeatherBackground } from "../../utils/methods";
 import {
-  getCityByCityName,
-  getCurrentWeatherByCity,
-  getWeatherFiveDayByCity,
-} from "../../utils/apis";
+  getFullWeatherByCityName,
+  getWeatherBackground,
+} from "../../utils/methods";
 import HomeBody from "./HomeBody";
-import {
-  CustomForecast,
-  CustomForecastBlock,
-} from "../../types/response/CustomForecast";
+import { CustomForecast } from "../../types/response/CustomForecast";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Location from "expo-location";
+import { getCityByCoordinates } from "../../utils/apis";
 
 const HomeScreen = () => {
   const dataStore = useContext<IDataContextDefault>(DataContext);
-  const { setLanguage, setTempUnit, setFollowedCities } = dataStore;
+  const {
+    setLanguage,
+    setTempUnit,
+    setFollowedCities,
+    setCurrentCity,
+    currentCity,
+  } = dataStore;
 
   const [followedWeathers, setFollowedWeathers] = useState<CustomForecast[]>(
     []
   );
+
   const [followedWeatherIndex, setFollowedWeatherIndex] = useState(0);
 
   useEffect(() => {
@@ -44,6 +45,7 @@ const HomeScreen = () => {
         //     language: "en",
         //     tempUnit: "metric",
         //     followedCities: [],
+        //     currentCity: {},
         //   })
         // );
 
@@ -64,8 +66,24 @@ const HomeScreen = () => {
 
   useEffect(() => {
     const fetchFollowedWeathers = async () => {
-      const followedWeathersPromiseArray = dataStore?.followedCities.map(
-        (followedCity) => getFollowedWeather(followedCity)
+      // set current city
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        return;
+      }
+      let location = await Location.getCurrentPositionAsync({});
+      const currentCity = await getCityByCoordinates(
+        location.coords.latitude,
+        location.coords.longitude
+      );
+      setCurrentCity(currentCity[0].name);
+
+      // get all of cities weather
+      const allOfCities = [currentCity[0].name, ...dataStore?.followedCities];
+      console.log("allOfCities", allOfCities);
+      const followedWeathersPromiseArray = allOfCities.map((followedCity) =>
+        getFullWeatherByCityName(followedCity)
       );
 
       const followedWeathersArray: CustomForecast[] = await Promise.all(
@@ -76,22 +94,7 @@ const HomeScreen = () => {
     fetchFollowedWeathers();
   }, [dataStore?.followedCities]);
 
-  const getFollowedWeather = async (cityName: string) => {
-    const city = await getCityByCityName(cityName);
-    const fiveDayForecastWeather: CustomForecastBlock[] =
-      await getWeatherFiveDayByCity(city[0].lat, city[0].lon);
-    const currentWeather: CustomForecastBlock = await getCurrentWeatherByCity(
-      city[0].lat,
-      city[0].lon
-    );
-
-    return {
-      city_name: city[0].local_names["en"],
-      current: currentWeather,
-      hourly: fiveDayForecastWeather.slice(0, 9),
-      daily: fiveDayForecastWeather.filter((item, index) => index % 8 === 0),
-    };
-  };
+  console.log(dataStore?.followedCities);
 
   const handleOnScroll = (nativeEvent: NativeScrollEvent) => {
     if (nativeEvent) {

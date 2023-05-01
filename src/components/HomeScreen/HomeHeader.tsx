@@ -6,6 +6,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Feather from "react-native-vector-icons/Feather";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { IHomeHeaderProps } from "../../types/HomeScreenComponent";
 import GlobalStyles from "../../utils/GlobalStyles";
 
@@ -43,20 +44,28 @@ const HomeHeader = ({
           <View style={styles.changeCityGroup}>
             {followedWeathers.length > 0 &&
               followedWeathers.map((followedWeather, index) => {
-                return index === followedWeatherIndex ? (
-                  <FontAwesome
+                return index === 0 ? (
+                  <FontAwesome5
                     key={index}
-                    name="circle"
-                    color="white"
-                    size={6}
+                    name="location-arrow"
+                    color={
+                      index === followedWeatherIndex
+                        ? "white"
+                        : "rgba(255, 255, 255, 0.5)"
+                    }
+                    size={8}
                     style={{ paddingHorizontal: 6 }}
                   />
                 ) : (
                   <FontAwesome
                     key={index}
-                    name="circle-thin"
-                    color="white"
-                    size={6}
+                    name="circle"
+                    color={
+                      index === followedWeatherIndex
+                        ? "white"
+                        : "rgba(255, 255, 255, 0.5)"
+                    }
+                    size={5}
                     style={{ paddingHorizontal: 6 }}
                   />
                 );
@@ -80,7 +89,7 @@ const styles = StyleSheet.create({
     right: 0,
     width: "100%",
     zIndex: 10,
-    height: 95,
+    height: 96,
   },
   homeHeaderContent: {
     flexDirection: "row",
@@ -93,6 +102,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingBottom: 8,
+    paddingTop: 2,
   },
   cityName: {
     fontWeight: "500",

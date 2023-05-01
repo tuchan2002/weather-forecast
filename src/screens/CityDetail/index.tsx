@@ -36,7 +36,7 @@ const CityDetail = ({
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const dataStore = useContext<IDataContextDefault>(DataContext);
-  const { followedCities, setFollowedCities } = dataStore;
+  const { followedCities, setFollowedCities, currentCity } = dataStore;
 
   const { searchedForecastWeather } = route.params;
   console.log(searchedForecastWeather);
@@ -71,7 +71,9 @@ const CityDetail = ({
           yAxisSuffix=" °"
         />
 
-        {followedCities.includes(searchedForecastWeather[0].city_name) && (
+        {[currentCity, ...followedCities].includes(
+          searchedForecastWeather[0].city_name
+        ) && (
           <View style={{ alignItems: "center" }}>
             <TouchableOpacity
               onPress={() => navigation.navigate("Home")}

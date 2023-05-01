@@ -30,7 +30,7 @@ const SearchCityScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const dataStore = useContext<IDataContextDefault>(DataContext);
-  const { followedCities, setFollowedCities } = dataStore;
+  const { followedCities, setFollowedCities, currentCity } = dataStore;
 
   const [cityNameSearch, setCityNameSearch] = useState("");
   const [searchedForecastWeather, setSearchedForecastWeather] = useState<
@@ -170,7 +170,7 @@ const SearchCityScreen = () => {
                   <Text style={{ fontSize: 18 }}>
                     {searchedForecastWeather[0].city_name}
                   </Text>
-                  {followedCities.includes(
+                  {[currentCity, ...followedCities].includes(
                     searchedForecastWeather[0].city_name
                   ) ? (
                     <Text style={{ fontSize: 16, color: "gray" }}>Added</Text>
