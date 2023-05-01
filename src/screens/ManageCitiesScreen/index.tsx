@@ -1,4 +1,4 @@
-import { SearchBar } from "@rneui/themed";
+import { Button, SearchBar } from "@rneui/themed";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -17,6 +17,7 @@ import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { getFullWeatherByCityName } from "../../utils/methods";
 import { translate } from "../../locales";
+import Accordion from "react-native-collapsible/Accordion";
 
 const ManageCitiesScreen = () => {
   const dataStore = useContext<IDataContextDefault>(DataContext);
@@ -25,6 +26,7 @@ const ManageCitiesScreen = () => {
   const [followedWeathers, setFollowedWeathers] = useState<CustomForecast[]>(
     []
   );
+  const [activeSections, setActiveSections] = useState([]);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   useEffect(() => {
@@ -44,6 +46,40 @@ const ManageCitiesScreen = () => {
     fetchFollowedWeathers();
   }, [dataStore?.followedCities]);
 
+  const _renderHeader = (section: CustomForecast) => {
+    return (
+      <FollowedCityItem
+        city_name={section.city_name}
+        temp_max={section.current.main.temp_max}
+        temp_min={section.current.main.temp_min}
+        current_temp={section.current.main.temp}
+      />
+    );
+  };
+
+  const _renderContent = () => {
+    return (
+      <Button
+        buttonStyle={{
+          backgroundColor: "#ff1744",
+          borderWidth: 0,
+          borderRadius: 50,
+          alignSelf: "center",
+          width: "50%",
+        }}
+        containerStyle={{
+          marginVertical: 8,
+        }}
+      >
+        Delete
+      </Button>
+    );
+  };
+
+  const _updateSections = (activeSections: any) => {
+    setActiveSections(activeSections);
+  };
+
   return (
     <SubScreenLayout title={translate(language).manageCities}>
       <View style={{ flex: 1 }}>
@@ -62,18 +98,17 @@ const ManageCitiesScreen = () => {
         {followedWeathers.length > 0 ? (
           <ScrollView
             showsVerticalScrollIndicator={false}
-            style={{ marginTop: 24, marginHorizontal: -16 }}
+            style={{ marginTop: 16, marginHorizontal: -16 }}
             contentContainerStyle={{ paddingHorizontal: 16 }}
           >
-            {followedWeathers.map((followedWeather, index) => (
-              <FollowedCityItem
-                key={index}
-                city_name={followedWeather.city_name}
-                temp_max={followedWeather.current.main.temp_max}
-                temp_min={followedWeather.current.main.temp_min}
-                current_temp={followedWeather.current.main.temp}
-              />
-            ))}
+            <Accordion
+              sections={followedWeathers}
+              activeSections={activeSections}
+              onChange={_updateSections}
+              renderHeader={_renderHeader}
+              renderContent={_renderContent}
+              underlayColor="rgba(0, 0, 0, 0.0)"
+            />
           </ScrollView>
         ) : (
           <View style={styles.loading}>

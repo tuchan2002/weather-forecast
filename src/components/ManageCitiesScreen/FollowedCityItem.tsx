@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: "white",
     borderRadius: 16,
-    marginBottom: 12,
+    marginTop: 8,
+    marginBottom: 4,
   },
   basicInfo: {},
   minMaxTemp: {
