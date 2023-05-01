@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { FollowedCityItemProps } from "../../types/ManageCitiesComponent";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { DataContext, IDataContextDefault } from "../../GlobalState";
 
 const FollowedCityItem = ({
   city_name,
@@ -8,10 +10,18 @@ const FollowedCityItem = ({
   temp_min,
   current_temp,
 }: FollowedCityItemProps) => {
+  const dataStore = useContext<IDataContextDefault>(DataContext);
+  const { currentCity } = dataStore;
+
   return (
     <View style={styles.container}>
       <View style={styles.basicInfo}>
-        <Text style={styles.cityName}>{city_name}</Text>
+        <Text style={styles.cityName}>
+          {city_name}
+          {city_name === currentCity && (
+            <Ionicons name="md-location-sharp" size={18} color="black" />
+          )}
+        </Text>
         <Text style={styles.minMaxTemp}>{`${Math.round(
           temp_min
         )}° / ${Math.round(temp_max)}°`}</Text>
