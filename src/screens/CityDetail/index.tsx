@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import SubScreenLayout from "../../layouts/SubScreenLayout";
 import { Dimensions } from "react-native";
 import { LineChart } from "react-native-chart-kit";
@@ -43,44 +43,54 @@ const CityDetail = ({
   const { searchedForecastWeather } = route.params;
 
   const data = {
-    labels: searchedForecastWeather[0].daily.map((item) =>
-      moment.unix(item.dt).format("ddd")
+    labels: searchedForecastWeather[0].hourly.map((item) =>
+      moment.unix(item.dt).format("HH:mm")
     ),
     datasets: [
       {
-        data: searchedForecastWeather[0].daily.map((item) => item.main.temp),
+        data: searchedForecastWeather[0].hourly.map((item) => item.main.temp),
         color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
         strokeWidth: 2,
       },
     ],
-    legend: [` ${translate(language).temperature}`],
   };
 
   return (
     <SubScreenLayout title={searchedForecastWeather[0].city_name}>
-      <View style={{ flex: 1, alignItems: "center" }}>
-        <LineChart
-          data={data}
-          width={Dimensions.get("window").width}
-          height={250}
-          chartConfig={chartConfig}
-          style={{
-            marginBottom: 36,
-            marginHorizontal: -16,
-          }}
-          fromZero={true}
-          yAxisSuffix=" °"
-        />
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ marginBottom: 16 }}>
+          {`⬤  ${translate(language).temperature}`}
+        </Text>
+        <View style={{ height: 310 }}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <LineChart
+              data={data}
+              width={data.labels.length * (Dimensions.get("window").width / 8)}
+              height={280}
+              chartConfig={chartConfig}
+              style={{
+                marginHorizontal: -12,
+              }}
+              fromZero={true}
+              yAxisSuffix="°"
+            />
+          </ScrollView>
+        </View>
 
         {[currentCity, ...followedCities].includes(
           searchedForecastWeather[0].city_name
         ) && (
-          <View style={{ alignItems: "center" }}>
+          <View style={{ alignItems: "center", flex: 1 }}>
             <TouchableOpacity
               onPress={() => navigation.navigate("Home")}
               style={{ marginBottom: 12 }}
             >
-              <AntDesign name="rightcircle" size={36} color="#000" />
+              <AntDesign name="rightcircle" size={46} color="#000" />
             </TouchableOpacity>
             <Text>{translate(language).viewOnHomeScreen}</Text>
           </View>

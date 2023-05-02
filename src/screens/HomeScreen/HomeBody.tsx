@@ -1,7 +1,6 @@
 import React from "react";
 import { ScrollView } from "react-native";
 import DailyForecast from "../../components/HomeScreen/DailyForecast";
-import HourlyForecast from "../../components/HomeScreen/HourlyForecast";
 import HomeMain from "../../components/HomeScreen/Main";
 import MoreInfo from "../../components/HomeScreen/MoreInfo";
 import { IHomeMainProps } from "../../types/HomeScreenComponent";
@@ -15,7 +14,6 @@ const HomeBody = ({ followedWeathersSelected }: IHomeMainProps) => {
         temp={followedWeathersSelected.current.main.temp}
         description={followedWeathersSelected.current.weather[0].description}
       />
-      <HourlyForecast hourlyForecast={followedWeathersSelected.hourly} />
       <DailyForecast dailyForecast={followedWeathersSelected.daily} />
       <MoreInfo
         wind_speed={followedWeathersSelected.current.wind.speed}

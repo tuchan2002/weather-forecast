@@ -52,5 +52,6 @@ export interface CustomForecast {
 
 export interface CustomForecastSearchCity {
   city_name: string;
+  hourly: CustomForecastBlock[];
   daily: CustomForecastBlock[];
 }

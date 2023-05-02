@@ -14,9 +14,6 @@ const DailyForecastItem = ({
 
   return (
     <View style={styles.dailyForecastItem}>
-      <Text style={[GlobalStyles.defaultText]}>
-        {moment.unix(dt).format("ddd")}
-      </Text>
       <Image
         style={{ width: 52, height: 52 }}
         source={{
@@ -24,39 +21,25 @@ const DailyForecastItem = ({
         }}
       />
       <Text style={[GlobalStyles.defaultText, styles.description]}>
-        {weather[0].description}
+        {moment.unix(dt).format("ddd")}・{weather[0].description}
       </Text>
-      <View style={styles.tempContainer}>
-        <Text style={[GlobalStyles.defaultText]}>{`${Math.round(
-          main.temp_max
-        )}°`}</Text>
-        <Text style={[styles.minTemp]}>{`${Math.round(main.temp_min)}°`}</Text>
-      </View>
+      <Text style={[GlobalStyles.defaultText]}>
+        {`${Math.round(main.temp_max)}°`} / {`${Math.round(main.temp_min)}°`}
+      </Text>
     </View>
   );
 };
 const styles = StyleSheet.create({
   dailyForecastItem: {
-    alignItems: "center",
-    padding: 11,
-    width: 88,
-  },
-  tempContainer: {
-    width: "100%",
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 6,
-  },
-  minTemp: {
-    color: "#ddd",
-    fontSize: 13,
   },
   description: {
     textTransform: "capitalize",
     flexWrap: "wrap",
-    textAlign: "center",
-    marginBottom: 16,
     flex: 1,
+    marginLeft: 8,
   },
 });
 export default DailyForecastItem;

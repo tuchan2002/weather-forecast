@@ -71,14 +71,11 @@ const SearchCityScreen = () => {
 
     setLoading(false);
 
-    const dailyForecast = fiveDayForecastWeather.filter(
-      (_, index) => index % 8 === 0
-    );
-
     setSearchedForecastWeather([
       {
         city_name: city[0].name,
-        daily: dailyForecast,
+        hourly: fiveDayForecastWeather,
+        daily: fiveDayForecastWeather.filter((_, index) => index % 8 === 0),
       },
     ]);
   };
