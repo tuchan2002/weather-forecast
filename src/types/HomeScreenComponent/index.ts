@@ -1,4 +1,5 @@
 import { FullForecast } from "../response";
+import { CustomForecast } from "../response/CustomForecast";
 
 export interface IMoreInfoProps {
   humidity: number;
@@ -6,7 +7,6 @@ export interface IMoreInfoProps {
   pressure: number;
   visibility: number;
   clouds: number;
-  uvi: number;
 }
 export interface ILabelIcon {
   iconType: IconType;
@@ -23,14 +23,12 @@ export enum IconType {
 }
 
 export interface IHomeHeaderProps {
-  city_name: string;
-  followedWeathers: FullForecast[];
+  followedWeathers: CustomForecast[];
   followedWeatherIndex: number;
 }
 
 export interface IHomeMainProps {
-  followedWeathers: FullForecast[];
-  followedWeatherIndex: number;
+  followedWeathersSelected: CustomForecast;
 }
 export interface HomeMainProps {
   dt: number;

@@ -1,24 +1,21 @@
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { DailyDataBlock } from "../../types/response";
+import { CustomForecastBlock } from "../../types/response/CustomForecast";
 import DailyForecastItem from "./DailyForecastItem";
 
 const DailyForecast = ({
   dailyForecast,
 }: {
-  dailyForecast: DailyDataBlock[];
+  dailyForecast: CustomForecastBlock[];
 }) => {
   return (
     <View style={styles.container}>
-      <FlatList
-        horizontal={true}
-        style={styles.dailyForecastList}
-        showsHorizontalScrollIndicator={false}
-        data={dailyForecast}
-        renderItem={({ item }) => (
-          <DailyForecastItem dailyForecastItem={item} />
-        )}
-      />
+      <View>
+        {dailyForecast.map((item, index) => (
+          <DailyForecastItem key={index} dailyForecastItem={item} />
+        ))}
+      </View>
     </View>
   );
 };
@@ -28,7 +25,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginHorizontal: 6,
     borderRadius: 24,
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
     paddingVertical: 18,
   },
   dailyForecastList: {

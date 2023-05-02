@@ -17,6 +17,7 @@ const SubScreenLayout = ({
   return (
     <View
       style={{
+        flex: 1,
         paddingTop: insets.top,
         paddingBottom: insets.bottom,
         paddingLeft: insets.left,
@@ -34,6 +35,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#f2f2f2",
     paddingHorizontal: 16,
+    flex: 1,
   },
 });
 export default SubScreenLayout;

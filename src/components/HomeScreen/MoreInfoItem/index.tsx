@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 16,
+    marginBottom: 20,
   },
 });
 export default MoreInfoItem;

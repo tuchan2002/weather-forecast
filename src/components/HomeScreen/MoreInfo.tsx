@@ -13,7 +13,6 @@ const MoreInfo = ({
   visibility,
   pressure,
   clouds,
-  uvi,
 }: IMoreInfoProps) => {
   const moreInfoItems: IMoreInfoItem[] = [
     {
@@ -44,11 +43,6 @@ const MoreInfo = ({
       labelText: "Visibility",
       valueText: `${visibility / 1000} Km`,
     },
-    {
-      labelIcon: { iconType: IconType.Feather, iconName: "sun" },
-      labelText: "UV Index",
-      valueText: `${uvi}`,
-    },
   ];
 
   const renderMoreInfoItems = () => {
@@ -67,6 +61,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 6,
     borderRadius: 24,
     padding: 24,
+    paddingBottom: 6,
     marginBottom: 12,
   },
 });

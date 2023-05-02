@@ -5,6 +5,8 @@ import HomeScreen from "./src/screens/HomeScreen/index";
 import SettingScreen from "./src/screens/SettingsScreen/index";
 import DataProvider from "./src/GlobalState";
 import ManageCitiesScreen from "./src/screens/ManageCitiesScreen";
+import SearchCityScreen from "./src/screens/SearchCity";
+import CityDetail from "./src/screens/CityDetail";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -26,6 +28,16 @@ export default function App() {
             <Stack.Screen
               name="ManageCities"
               component={ManageCitiesScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="SearchCity"
+              component={SearchCityScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="CityDetail"
+              component={CityDetail}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>
