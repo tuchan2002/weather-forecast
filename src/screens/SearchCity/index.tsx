@@ -84,18 +84,18 @@ const SearchCityScreen = () => {
   };
 
   const handleAddCity = async () => {
-    const newFollowCities = [
+    const newFollowedCities = [
       ...followedCities,
       searchedForecastWeather[0].city_name,
     ];
-    setFollowedCities(newFollowCities);
+    setFollowedCities(newFollowedCities);
 
     await AsyncStorage.setItem(
       "@weatherForecast",
       JSON.stringify({
         language: "en",
         tempUnit: "metric",
-        followedCities: newFollowCities,
+        followedCities: newFollowedCities,
       })
     );
     Alert.alert(searchedForecastWeather[0].city_name);
