@@ -113,7 +113,7 @@ const HomeScreen = () => {
       {followedWeathers.length > 0 ? (
         <View style={{ flex: 1 }}>
           <HomeHeader
-            city_name={followedWeathers[followedWeatherIndex].city_name}
+            city_name={followedWeathers[followedWeatherIndex]?.city_name}
             followedWeathers={followedWeathers}
             followedWeatherIndex={followedWeatherIndex}
           />

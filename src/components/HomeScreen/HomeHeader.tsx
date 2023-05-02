@@ -43,7 +43,7 @@ const HomeHeader = ({
           </Text>
           <View style={styles.changeCityGroup}>
             {followedWeathers.length > 0 &&
-              followedWeathers.map((followedWeather, index) => {
+              followedWeathers.map((_, index) => {
                 return index === 0 ? (
                   <FontAwesome5
                     key={index}
