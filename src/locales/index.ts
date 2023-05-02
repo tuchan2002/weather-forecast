@@ -24,6 +24,7 @@ const languageData = {
     temperature: "Temperature",
     noResults: "No Results",
     remove: "Remove",
+    updating: "Updating",
   },
   vi: {
     windSpeed: "Tốc độ gió",
@@ -51,6 +52,7 @@ const languageData = {
     temperature: "Nhiệt độ",
     noResults: "Không có kết quả nào",
     remove: "Xóa",
+    updating: "Đang cập nhật",
   },
 };
 

@@ -23,6 +23,7 @@ export enum IconType {
 }
 
 export interface IHomeHeaderProps {
+  loading: boolean;
   followedWeathers: CustomForecast[];
   followedWeatherIndex: number;
 }

@@ -40,6 +40,7 @@ const HomeScreen = () => {
   >([]);
 
   const [followedWeatherIndex, setFollowedWeatherIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const setGlobalState = async () => {
@@ -72,6 +73,7 @@ const HomeScreen = () => {
   useEffect(() => {
     const setCurrentCityWeather = async () => {
       console.log("Location loading...");
+      setLoading(true);
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         console.log("Permission to access location was denied");
@@ -88,6 +90,8 @@ const HomeScreen = () => {
       const currentLocationCityWeather: CustomForecast =
         await getFullWeatherByCityName(currentCity[0].name, language, tempUnit);
       setCurrentLocationWeather([currentLocationCityWeather]);
+
+      setLoading(false);
     };
     setCurrentCityWeather();
   }, [language, tempUnit]);
@@ -129,6 +133,7 @@ const HomeScreen = () => {
       {followedWeathers.length > 0 ? (
         <View style={{ flex: 1 }}>
           <HomeHeader
+            loading={loading}
             followedWeathers={followedWeathers}
             followedWeatherIndex={followedWeatherIndex}
           />
