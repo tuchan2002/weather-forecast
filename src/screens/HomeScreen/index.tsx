@@ -61,29 +61,6 @@ const HomeScreen = () => {
         setLanguage(language);
         setTempUnit(tempUnit);
         setFollowedCities(followedCities);
-
-        // set current city
-        console.log("Location loading...");
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== "granted") {
-          console.log("Permission to access location was denied");
-          return;
-        }
-        let location = await Location.getCurrentPositionAsync({});
-        const currentCity = await getCityByCoordinates(
-          location.coords.latitude,
-          location.coords.longitude
-        );
-        console.log("Load Location success !");
-        setCurrentCity(currentCity[0].name);
-
-        const currentLocationCityWeather: CustomForecast =
-          await getFullWeatherByCityName(
-            currentCity[0].name,
-            language,
-            tempUnit
-          );
-        setCurrentLocationWeather([currentLocationCityWeather]);
       } catch (error) {
         console.log(error);
       }
@@ -91,6 +68,29 @@ const HomeScreen = () => {
 
     setGlobalState();
   }, []);
+
+  useEffect(() => {
+    const setCurrentCityWeather = async () => {
+      console.log("Location loading...");
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        return;
+      }
+      let location = await Location.getCurrentPositionAsync({});
+      const currentCity = await getCityByCoordinates(
+        location.coords.latitude,
+        location.coords.longitude
+      );
+      console.log("Load Location success !");
+      setCurrentCity(currentCity[0].name);
+
+      const currentLocationCityWeather: CustomForecast =
+        await getFullWeatherByCityName(currentCity[0].name, language, tempUnit);
+      setCurrentLocationWeather([currentLocationCityWeather]);
+    };
+    setCurrentCityWeather();
+  }, [language, tempUnit]);
 
   useEffect(() => {
     const fetchFollowedWeathers = async () => {
