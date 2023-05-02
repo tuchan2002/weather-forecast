@@ -105,6 +105,7 @@ const ManageCitiesScreen = () => {
         followedCities: newFollowedCities,
       })
     );
+    setActiveSections([]);
     Alert.alert(dataStore?.followedCities[removeIndex]);
   };
 
