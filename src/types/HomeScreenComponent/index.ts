@@ -23,7 +23,6 @@ export enum IconType {
 }
 
 export interface IHomeHeaderProps {
-  city_name: string;
   followedWeathers: CustomForecast[];
   followedWeatherIndex: number;
 }

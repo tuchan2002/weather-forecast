@@ -43,7 +43,7 @@ const languageData = {
     settings: "Cài đặt",
     language: "Ngôn ngữ",
     tempUnit: "Đơn vị nhiệt độ",
-    cancel: "Hủy bỏ",
+    cancel: "Hủy",
     save: "Lưu",
     viewOnHomeScreen: "Xem trên Màn hình chính",
     added: "Đã thêm",

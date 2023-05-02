@@ -35,6 +35,9 @@ const HomeScreen = () => {
   const [followedWeathers, setFollowedWeathers] = useState<CustomForecast[]>(
     []
   );
+  const [currentLocationWeather, setCurrentLocationWeather] = useState<
+    CustomForecast[]
+  >([]);
 
   const [followedWeatherIndex, setFollowedWeatherIndex] = useState(0);
 
@@ -58,6 +61,29 @@ const HomeScreen = () => {
         setLanguage(language);
         setTempUnit(tempUnit);
         setFollowedCities(followedCities);
+
+        // set current city
+        console.log("Location loading...");
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          console.log("Permission to access location was denied");
+          return;
+        }
+        let location = await Location.getCurrentPositionAsync({});
+        const currentCity = await getCityByCoordinates(
+          location.coords.latitude,
+          location.coords.longitude
+        );
+        console.log("Load Location success !");
+        setCurrentCity(currentCity[0].name);
+
+        const currentLocationCityWeather: CustomForecast =
+          await getFullWeatherByCityName(
+            currentCity[0].name,
+            language,
+            tempUnit
+          );
+        setCurrentLocationWeather([currentLocationCityWeather]);
       } catch (error) {
         console.log(error);
       }
@@ -68,23 +94,8 @@ const HomeScreen = () => {
 
   useEffect(() => {
     const fetchFollowedWeathers = async () => {
-      // set current city
-      console.log("Location loading...");
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Permission to access location was denied");
-        return;
-      }
-      let location = await Location.getCurrentPositionAsync({});
-      const currentCity = await getCityByCoordinates(
-        location.coords.latitude,
-        location.coords.longitude
-      );
-      setCurrentCity(currentCity[0].name);
-
       // get all of cities weather
-      const allOfCities = [currentCity[0].name, ...dataStore?.followedCities];
-      console.log("allOfCities", allOfCities);
+      const allOfCities = [...dataStore?.followedCities];
       const followedWeathersPromiseArray = allOfCities.map((followedCity) =>
         getFullWeatherByCityName(followedCity, language, tempUnit)
       );
@@ -92,16 +103,21 @@ const HomeScreen = () => {
       const followedWeathersArray: CustomForecast[] = await Promise.all(
         followedWeathersPromiseArray
       );
-      setFollowedWeathers([...followedWeathersArray]);
+      setFollowedWeathers([
+        ...currentLocationWeather,
+        ...followedWeathersArray,
+      ]);
     };
     fetchFollowedWeathers();
-  }, [dataStore?.followedCities, language, tempUnit]);
+  }, [dataStore?.followedCities, currentLocationWeather, language, tempUnit]);
 
   const handleOnScroll = (nativeEvent: NativeScrollEvent) => {
     if (nativeEvent) {
       const slide = Math.ceil(
-        nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width
+        Math.round(nativeEvent.contentOffset.x) /
+          Math.round(nativeEvent.layoutMeasurement.width)
       );
+
       if (slide !== followedWeatherIndex) {
         setFollowedWeatherIndex(slide);
       }
@@ -113,7 +129,6 @@ const HomeScreen = () => {
       {followedWeathers.length > 0 ? (
         <View style={{ flex: 1 }}>
           <HomeHeader
-            city_name={followedWeathers[followedWeatherIndex]?.city_name}
             followedWeathers={followedWeathers}
             followedWeatherIndex={followedWeatherIndex}
           />

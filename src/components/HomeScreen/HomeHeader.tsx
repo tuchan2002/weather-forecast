@@ -11,7 +11,6 @@ import { IHomeHeaderProps } from "../../types/HomeScreenComponent";
 import GlobalStyles from "../../utils/GlobalStyles";
 
 const HomeHeader = ({
-  city_name,
   followedWeathers,
   followedWeatherIndex,
 }: IHomeHeaderProps) => {
@@ -39,7 +38,7 @@ const HomeHeader = ({
         </TouchableOpacity>
         <View>
           <Text style={[GlobalStyles.defaultText, styles.cityName]}>
-            {city_name}
+            {followedWeathers[followedWeatherIndex]?.city_name}
           </Text>
           <View style={styles.changeCityGroup}>
             {followedWeathers.length > 0 &&

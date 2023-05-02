@@ -131,10 +131,10 @@ const ManageCitiesScreen = () => {
             contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 16 }}
           >
             <FollowedCityItem
-              city_name={followedWeathers[0].city_name}
-              temp_max={followedWeathers[0].current.main.temp_max}
-              temp_min={followedWeathers[0].current.main.temp_min}
-              current_temp={followedWeathers[0].current.main.temp}
+              city_name={followedWeathers[0]?.city_name}
+              temp_max={followedWeathers[0]?.current.main.temp_max}
+              temp_min={followedWeathers[0]?.current.main.temp_min}
+              current_temp={followedWeathers[0]?.current.main.temp}
             />
             <Accordion
               sections={[...followedWeathers].slice(1, followedWeathers.length)}
