@@ -29,7 +29,11 @@ const ManageCitiesScreen = () => {
 
   useEffect(() => {
     const fetchFollowedWeathers = async () => {
-      const followedWeathersPromiseArray = [currentCity, ...followedCities].map(
+      const allOfCitiesArray = currentCity
+        ? [currentCity, ...followedCities]
+        : [...followedCities];
+
+      const followedWeathersPromiseArray = allOfCitiesArray.map(
         (followedCity) =>
           getFullWeatherByCityName(followedCity, language, tempUnit)
       );

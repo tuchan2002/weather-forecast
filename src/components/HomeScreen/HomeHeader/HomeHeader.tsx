@@ -18,7 +18,7 @@ const HomeHeader = ({
   followedWeatherIndex,
 }: IHomeHeaderProps) => {
   const dataStore = useContext<IDataContextDefault>(DataContext);
-  const { language } = dataStore;
+  const { language, currentCity } = dataStore;
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const insets = useSafeAreaInsets();
@@ -35,8 +35,8 @@ const HomeHeader = ({
     } else {
       return (
         followedWeathers.length > 0 &&
-        followedWeathers.map((_, index) => {
-          return index === 0 ? (
+        followedWeathers.map((flWeather, index) => {
+          return currentCity === flWeather?.city_name ? (
             <FontAwesome5
               key={index}
               name="location-arrow"
