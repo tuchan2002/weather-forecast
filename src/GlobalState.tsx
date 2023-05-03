@@ -1,5 +1,4 @@
-import axios from "axios";
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 import { createContext, useState } from "react";
 
 interface IDataContextProps {

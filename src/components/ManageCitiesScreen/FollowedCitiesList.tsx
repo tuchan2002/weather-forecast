@@ -14,7 +14,7 @@ const FollowedCitiesList = ({
   followedWeathers: CustomForecast[];
 }) => {
   const dataStore = useContext<IDataContextDefault>(DataContext);
-  const { language, tempUnit, setFollowedCities } = dataStore;
+  const { language, tempUnit, setFollowedCities, currentCity } = dataStore;
 
   const [activeSections, setActiveSections] = useState([]);
 
@@ -82,14 +82,21 @@ const FollowedCitiesList = ({
       style={{ marginTop: 16, marginHorizontal: -16 }}
       contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 16 }}
     >
-      <FollowedCityItem
-        city_name={followedWeathers[0]?.city_name}
-        temp_max={followedWeathers[0]?.current.main.temp_max}
-        temp_min={followedWeathers[0]?.current.main.temp_min}
-        current_temp={followedWeathers[0]?.current.main.temp}
-      />
+      {currentCity && (
+        <FollowedCityItem
+          city_name={followedWeathers[0]?.city_name}
+          temp_max={followedWeathers[0]?.current.main.temp_max}
+          temp_min={followedWeathers[0]?.current.main.temp_min}
+          current_temp={followedWeathers[0]?.current.main.temp}
+        />
+      )}
+
       <Accordion
-        sections={[...followedWeathers].slice(1, followedWeathers.length)}
+        sections={
+          currentCity
+            ? [...followedWeathers].slice(1, followedWeathers.length)
+            : [...followedWeathers]
+        }
         activeSections={activeSections}
         onChange={_updateSections}
         renderHeader={_renderHeader}
