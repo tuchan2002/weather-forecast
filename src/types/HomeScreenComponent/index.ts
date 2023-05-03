@@ -32,8 +32,6 @@ export interface IHomeMainProps {
   followedWeathersSelected: CustomForecast;
 }
 export interface HomeMainProps {
-  dt: number;
-  icon: string;
   temp: number;
   description: string;
 }

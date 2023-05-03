@@ -8,7 +8,7 @@ import {
   Dimensions,
   NativeScrollEvent,
 } from "react-native";
-import HomeHeader from "../../components/HomeScreen/HomeHeader";
+import HomeHeader from "../../components/HomeScreen/HomeHeader/HomeHeader";
 import { DataContext, IDataContextDefault } from "../../GlobalState";
 import {
   getFullWeatherByCityName,
@@ -26,8 +26,8 @@ const HomeScreen = () => {
     setLanguage,
     setTempUnit,
     setFollowedCities,
+    followedCities,
     setCurrentCity,
-    currentCity,
     language,
     tempUnit,
   } = dataStore;
@@ -57,11 +57,10 @@ const HomeScreen = () => {
         // set app setting
         const globalStateJson = await AsyncStorage.getItem("@weatherForecast");
         const globalState = JSON.parse(globalStateJson || "");
-        const { language, tempUnit, followedCities } = globalState;
 
-        setLanguage(language);
-        setTempUnit(tempUnit);
-        setFollowedCities(followedCities);
+        setLanguage(globalState.language);
+        setTempUnit(globalState.tempUnit);
+        setFollowedCities(globalState.followedCities);
       } catch (error) {
         console.log(error);
       }
@@ -99,7 +98,7 @@ const HomeScreen = () => {
   useEffect(() => {
     const fetchFollowedWeathers = async () => {
       // get all of cities weather
-      const allOfCities = [...dataStore?.followedCities];
+      const allOfCities = [...followedCities];
       const followedWeathersPromiseArray = allOfCities.map((followedCity) =>
         getFullWeatherByCityName(followedCity, language, tempUnit)
       );
@@ -113,7 +112,7 @@ const HomeScreen = () => {
       ]);
     };
     fetchFollowedWeathers();
-  }, [dataStore?.followedCities, currentLocationWeather, language, tempUnit]);
+  }, [followedCities, currentLocationWeather, language, tempUnit]);
 
   const handleOnScroll = (nativeEvent: NativeScrollEvent) => {
     if (nativeEvent) {

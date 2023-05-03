@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView } from "react-native";
 import DailyForecast from "../../components/HomeScreen/DailyForecast";
-import HomeMain from "../../components/HomeScreen/Main";
+import HomeMain from "../../components/HomeScreen/Main/Main";
 import MoreInfo from "../../components/HomeScreen/MoreInfo";
 import { IHomeMainProps } from "../../types/HomeScreenComponent";
 
@@ -9,8 +9,6 @@ const HomeBody = ({ followedWeathersSelected }: IHomeMainProps) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 95 }}>
       <HomeMain
-        dt={followedWeathersSelected.current.dt}
-        icon={followedWeathersSelected.current.weather[0].icon}
         temp={followedWeathersSelected.current.main.temp}
         description={followedWeathersSelected.current.weather[0].description}
       />

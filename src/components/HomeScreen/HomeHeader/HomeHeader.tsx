@@ -1,16 +1,16 @@
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import moment from "moment";
 import React, { useContext } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Feather from "react-native-vector-icons/Feather";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import { IHomeHeaderProps } from "../../types/HomeScreenComponent";
-import GlobalStyles from "../../utils/GlobalStyles";
-import { translate } from "../../locales";
-import { DataContext, IDataContextDefault } from "../../GlobalState";
+import { IHomeHeaderProps } from "../../../types/HomeScreenComponent";
+import GlobalStyles from "../../../utils/GlobalStyles";
+import { translate } from "../../../locales";
+import { DataContext, IDataContextDefault } from "../../../GlobalState";
+import styles from "./home-header-style";
 
 const HomeHeader = ({
   loading,
@@ -101,32 +101,5 @@ const HomeHeader = ({
     </View>
   );
 };
-const styles = StyleSheet.create({
-  homeHeaderContainer: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    width: "100%",
-    zIndex: 10,
-    height: 96,
-  },
-  homeHeaderContent: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginTop: 16,
-  },
-  changeCityGroup: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingBottom: 8,
-    paddingTop: 2,
-  },
-  cityName: {
-    fontWeight: "500",
-    fontSize: 18,
-    textAlign: "center",
-  },
-});
+
 export default HomeHeader;

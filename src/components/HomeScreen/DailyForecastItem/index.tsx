@@ -1,7 +1,6 @@
 import moment from "moment";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-import { DailyDataBlock } from "../../../types/response";
 import { CustomForecastBlock } from "../../../types/response/CustomForecast";
 import GlobalStyles from "../../../utils/GlobalStyles";
 

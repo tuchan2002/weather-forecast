@@ -1,6 +1,5 @@
 import React from "react";
-import { FlatList, StyleSheet, View } from "react-native";
-import { DailyDataBlock } from "../../types/response";
+import { StyleSheet, View } from "react-native";
 import { CustomForecastBlock } from "../../types/response/CustomForecast";
 import DailyForecastItem from "./DailyForecastItem";
 
