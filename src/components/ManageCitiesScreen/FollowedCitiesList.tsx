@@ -73,7 +73,10 @@ const FollowedCitiesList = ({
       })
     );
     setActiveSections([]);
-    Alert.alert(dataStore?.followedCities[removeIndex]);
+    Alert.alert(
+      translate(language).removeSuccessful,
+      dataStore?.followedCities[removeIndex]
+    );
   };
 
   return (

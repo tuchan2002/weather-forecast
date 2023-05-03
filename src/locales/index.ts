@@ -25,6 +25,8 @@ const languageData = {
     noResults: "No Results",
     remove: "Remove",
     updating: "Updating",
+    addSuccessful: "Add successful",
+    removeSuccessful: "Remove successful",
   },
   vi: {
     windSpeed: "Tốc độ gió",
@@ -53,6 +55,8 @@ const languageData = {
     noResults: "Không có kết quả nào",
     remove: "Xóa",
     updating: "Đang cập nhật",
+    addSuccessful: "Thêm thành công",
+    removeSuccessful: "Xóa thành công",
   },
 };
 

@@ -36,7 +36,10 @@ const SearchResult = ({
         followedCities: newFollowedCities,
       })
     );
-    Alert.alert(searchedForecastWeather[0].city_name);
+    Alert.alert(
+      translate(language).addSuccessful,
+      searchedForecastWeather[0].city_name
+    );
   };
 
   return (
