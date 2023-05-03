@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   currentTemp: {
-    fontSize: 125,
+    fontSize: 120,
     textAlign: "center",
   },
   feelsLike: {
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     fontSize: 50,
     position: "absolute",
     top: 22,
-    right: -20,
+    right: -22,
   },
 });
 

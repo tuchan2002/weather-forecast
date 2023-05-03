@@ -27,6 +27,8 @@ const languageData = {
     updating: "Updating",
     addSuccessful: "Add successful",
     removeSuccessful: "Remove successful",
+    cannotAdd: "Can't add more cities",
+    toAddANewOne: "To add a new one, delete a city that is already.",
   },
   vi: {
     windSpeed: "Tốc độ gió",
@@ -57,6 +59,8 @@ const languageData = {
     updating: "Đang cập nhật",
     addSuccessful: "Thêm thành công",
     removeSuccessful: "Xóa thành công",
+    cannotAdd: "Không thể thêm nhiều thành phố",
+    toAddANewOne: "Để thêm một thành phố mới, hãy xóa một thành phố đã có.",
   },
 };
 
