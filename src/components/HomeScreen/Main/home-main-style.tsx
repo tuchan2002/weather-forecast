@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   currentTemp: {
-    fontSize: 100,
+    fontSize: 125,
     textAlign: "center",
   },
   feelsLike: {
@@ -30,9 +30,9 @@ const styles = StyleSheet.create({
     textTransform: "capitalize",
   },
   deg: {
-    fontSize: 48,
+    fontSize: 50,
     position: "absolute",
-    top: 18,
+    top: 22,
     right: -20,
   },
 });
