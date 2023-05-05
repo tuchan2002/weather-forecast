@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import {
   IconType,
@@ -6,6 +6,8 @@ import {
   IMoreInfoProps,
 } from "../../types/HomeScreenComponent";
 import MoreInfoItem from "./MoreInfoItem";
+import { translate } from "../../locales";
+import { DataContext, IDataContextDefault } from "../../GlobalState";
 
 const MoreInfo = ({
   humidity,
@@ -14,10 +16,13 @@ const MoreInfo = ({
   pressure,
   clouds,
 }: IMoreInfoProps) => {
+  const dataStore = useContext<IDataContextDefault>(DataContext);
+  const { language } = dataStore;
+
   const moreInfoItems: IMoreInfoItem[] = [
     {
       labelIcon: { iconType: IconType.Ionicons, iconName: "water-outline" },
-      labelText: "Humidity",
+      labelText: `${translate(language).humidity}`,
       valueText: `${humidity} %`,
     },
     {
@@ -25,22 +30,22 @@ const MoreInfo = ({
         iconType: IconType.Ionicons,
         iconName: "speedometer-outline",
       },
-      labelText: "Pressure",
+      labelText: `${translate(language).pressure}`,
       valueText: `${pressure} hPa`,
     },
     {
       labelIcon: { iconType: IconType.Feather, iconName: "wind" },
-      labelText: "Wind Speed",
+      labelText: `${translate(language).windSpeed}`,
       valueText: `${Math.round(wind_speed * 3.6)} Km/h`,
     },
     {
       labelIcon: { iconType: IconType.Feather, iconName: "cloud" },
-      labelText: "Cloud",
+      labelText: `${translate(language).cloud}`,
       valueText: `${clouds} %`,
     },
     {
       labelIcon: { iconType: IconType.Feather, iconName: "eye" },
-      labelText: "Visibility",
+      labelText: `${translate(language).visibility}`,
       valueText: `${visibility / 1000} Km`,
     },
   ];
