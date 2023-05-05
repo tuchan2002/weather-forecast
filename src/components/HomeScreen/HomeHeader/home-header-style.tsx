@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     paddingTop: 2,
   },
   cityName: {
-    fontWeight: "500",
+    fontWeight: "700",
     fontSize: 18,
     textAlign: "center",
   },
