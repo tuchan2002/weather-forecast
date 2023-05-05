@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -19,8 +19,15 @@ import { CustomForecast } from "../../types/response/CustomForecast";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
 import { getCityByCoordinates } from "../../utils/apis";
+import { RouteProp } from "@react-navigation/native";
 
-const HomeScreen = () => {
+const HomeScreen = ({
+  route,
+}: {
+  route: RouteProp<{
+    params: { cityName: string };
+  }>;
+}) => {
   const dataStore = useContext<IDataContextDefault>(DataContext);
   const {
     setLanguage,
@@ -32,6 +39,7 @@ const HomeScreen = () => {
     tempUnit,
   } = dataStore;
 
+  const scrollRef = useRef<ScrollView>(null);
   const [followedWeathers, setFollowedWeathers] = useState<CustomForecast[]>(
     []
   );
@@ -114,6 +122,10 @@ const HomeScreen = () => {
     fetchFollowedWeathers();
   }, [followedCities, currentLocationWeather, language, tempUnit]);
 
+  useEffect(() => {
+    handleOnScrollTo(route.params?.cityName);
+  }, [route.params?.cityName]);
+
   const handleOnScroll = (nativeEvent: NativeScrollEvent) => {
     if (nativeEvent) {
       const slide = Math.ceil(
@@ -127,6 +139,24 @@ const HomeScreen = () => {
     }
   };
 
+  const handleOnScrollTo = (cityName: string) => {
+    if (!cityName) return;
+
+    const idx = followedWeathers
+      .map((flWeather) => flWeather.city_name)
+      .indexOf(cityName);
+
+    console.log("SCROLL TO", idx, cityName);
+
+    scrollRef.current?.scrollTo({
+      x: Dimensions.get("window").width * idx,
+      animated: true,
+    });
+  };
+
+  console.log("route.params", route.params);
+  console.log("followedWeathers.length", followedWeathers.length);
+
   return (
     <View style={styles.container}>
       {followedWeathers.length > 0 ? (
@@ -137,6 +167,7 @@ const HomeScreen = () => {
             followedWeatherIndex={followedWeatherIndex}
           />
           <ScrollView
+            ref={scrollRef}
             horizontal
             showsHorizontalScrollIndicator={false}
             pagingEnabled

@@ -22,7 +22,6 @@ const SearchResult = ({
     dataStore;
 
   const handleAddCity = async () => {
-    console.log(followedCities.length);
     if (followedCities.length > 7) {
       Alert.alert(
         translate(language).cannotAdd,

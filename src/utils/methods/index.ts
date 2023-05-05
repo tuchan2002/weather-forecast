@@ -36,7 +36,7 @@ export const getFullWeatherByCityName = async (
   );
 
   return {
-    city_name: city[0].local_names["en"],
+    city_name: city[0].name,
     current: currentWeather,
     hourly: fiveDayForecastWeather.slice(0, 9),
     daily: fiveDayForecastWeather.filter((item, index) => index % 8 === 0),
