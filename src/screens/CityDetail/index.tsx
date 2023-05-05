@@ -87,7 +87,11 @@ const CityDetail = ({
         ) && (
           <View style={{ alignItems: "center", flex: 1 }}>
             <TouchableOpacity
-              onPress={() => navigation.navigate("Home")}
+              onPress={() =>
+                navigation.navigate("Home", {
+                  cityName: searchedForecastWeather[0].city_name,
+                })
+              }
               style={{ marginBottom: 12 }}
             >
               <AntDesign name="rightcircle" size={46} color="#000" />

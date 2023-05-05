@@ -1,38 +1,25 @@
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { SearchBar, Text } from "@rneui/themed";
-import moment from "moment";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import {
-  ActivityIndicator,
-  Alert,
-  Button,
-  Dimensions,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import React, { useContext, useRef, useState } from "react";
+import { ActivityIndicator, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import DailyForecast from "../../components/HomeScreen/DailyForecast";
 import {
   CustomForecastBlock,
   CustomForecastSearchCity,
 } from "../../types/response/CustomForecast";
 import { getCityByCityName, getWeatherFiveDayByCity } from "../../utils/apis";
-import GlobalStyles from "../../utils/GlobalStyles";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DataContext, IDataContextDefault } from "../../GlobalState";
-import AntDesign from "react-native-vector-icons/AntDesign";
 import { translate } from "../../locales";
+import SearchResult from "../../components/SearchCityScreen/SearchResult";
+import styles from "./search-city-style";
 
 const SearchCityScreen = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const dataStore = useContext<IDataContextDefault>(DataContext);
-  const { followedCities, setFollowedCities, currentCity, language, tempUnit } =
-    dataStore;
+  const { language, tempUnit } = dataStore;
 
   const [cityNameSearch, setCityNameSearch] = useState("");
   const [searchedForecastWeather, setSearchedForecastWeather] = useState<
@@ -80,24 +67,6 @@ const SearchCityScreen = () => {
     ]);
   };
 
-  const handleAddCity = async () => {
-    const newFollowedCities = [
-      ...followedCities,
-      searchedForecastWeather[0].city_name,
-    ];
-    setFollowedCities(newFollowedCities);
-
-    await AsyncStorage.setItem(
-      "@weatherForecast",
-      JSON.stringify({
-        language: "en",
-        tempUnit: "metric",
-        followedCities: newFollowedCities,
-      })
-    );
-    Alert.alert(searchedForecastWeather[0].city_name);
-  };
-
   const renderSearchResults = () => {
     if (loading) {
       return (
@@ -109,13 +78,7 @@ const SearchCityScreen = () => {
 
     if (searchedForecastWeather.length === 0) {
       return (
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        <View style={styles.noResultsWrapper}>
           <Text
             style={{
               fontSize: 16,
@@ -126,81 +89,9 @@ const SearchCityScreen = () => {
         </View>
       );
     } else if (searchedForecastWeather.length > 0) {
-      return (
-        <View style={{ flex: 1, paddingHorizontal: 16, marginTop: 24 }}>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("CityDetail", {
-                searchedForecastWeather,
-              })
-            }
-            activeOpacity={0.5}
-          >
-            <View
-              style={{
-                backgroundColor: "white",
-                borderRadius: 12,
-                paddingHorizontal: 14,
-                paddingVertical: 18,
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text style={{ fontSize: 18 }}>
-                  {searchedForecastWeather[0].city_name}
-                </Text>
-                {[currentCity, ...followedCities].includes(
-                  searchedForecastWeather[0].city_name
-                ) ? (
-                  <Text style={{ fontSize: 16, color: "gray" }}>
-                    {translate(language).added}
-                  </Text>
-                ) : (
-                  <TouchableOpacity
-                    onPress={() => handleAddCity()}
-                    style={{ marginBottom: 12 }}
-                  >
-                    <AntDesign name="pluscircle" size={30} color="#000" />
-                  </TouchableOpacity>
-                )}
-              </View>
-
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  marginTop: 24,
-                  marginHorizontal: -16,
-                }}
-              >
-                {searchedForecastWeather[0].daily.map((item, index) => (
-                  <View style={styles.dailyForecastItem} key={index}>
-                    <Text>{moment.unix(item.dt).format("ddd")}</Text>
-                    <Image
-                      style={{ width: 52, height: 52 }}
-                      source={{
-                        uri: `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`,
-                      }}
-                    />
-                    <Text style={{ marginVertical: 10 }}>{`${Math.round(
-                      item.main.temp_max
-                    )}°`}</Text>
-                    <Text>{`${Math.round(item.main.temp_min)}°`}</Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-          </TouchableOpacity>
-        </View>
-      );
+      return <SearchResult searchedForecastWeather={searchedForecastWeather} />;
     }
   };
-
-  console.log("loading", loading);
 
   return (
     <View
@@ -212,26 +103,14 @@ const SearchCityScreen = () => {
         paddingRight: insets.right,
       }}
     >
-      <View
-        style={{
-          paddingHorizontal: 16,
-          paddingTop: 12,
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+      <View style={styles.container}>
         <SearchBar
           placeholder={translate(language).enterLocation}
           onChangeText={updateCityNameSearch}
           value={cityNameSearch}
           platform="android"
-          containerStyle={{
-            borderRadius: 100,
-            paddingHorizontal: 8,
-            flexGrow: 1,
-          }}
-          inputStyle={{ flexGrow: 1, fontSize: 16, marginLeft: 10 }}
+          containerStyle={styles.searchBarContainerStyle}
+          inputStyle={styles.searchBarInputStyle}
           ref={searchBarEl}
           onSubmitEditing={handleSubmitSearchBar}
         />
@@ -240,32 +119,12 @@ const SearchCityScreen = () => {
           onPress={() => navigation.navigate("ManageCities")}
           activeOpacity={1}
         >
-          <Text
-            style={{
-              color: "#2089dc",
-              fontSize: 18,
-              marginLeft: 14,
-            }}
-          >
-            {translate(language).cancel}
-          </Text>
+          <Text style={styles.cancelButton}>{translate(language).cancel}</Text>
         </TouchableOpacity>
       </View>
       {renderSearchResults()}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  loading: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  dailyForecastItem: {
-    alignItems: "center",
-    flex: 1,
-  },
-});
 
 export default SearchCityScreen;

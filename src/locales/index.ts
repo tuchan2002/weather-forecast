@@ -24,6 +24,11 @@ const languageData = {
     temperature: "Temperature",
     noResults: "No Results",
     remove: "Remove",
+    updating: "Updating",
+    addSuccessful: "Add successful",
+    removeSuccessful: "Remove successful",
+    cannotAdd: "Can't add more cities",
+    toAddANewOne: "To add a new one, delete a city that is already.",
   },
   vi: {
     windSpeed: "Tốc độ gió",
@@ -51,6 +56,11 @@ const languageData = {
     temperature: "Nhiệt độ",
     noResults: "Không có kết quả nào",
     remove: "Xóa",
+    updating: "Đang cập nhật",
+    addSuccessful: "Thêm thành công",
+    removeSuccessful: "Xóa thành công",
+    cannotAdd: "Không thể thêm nhiều thành phố",
+    toAddANewOne: "Để thêm một thành phố mới, hãy xóa một thành phố đã có.",
   },
 };
 
