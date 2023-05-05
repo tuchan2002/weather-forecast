@@ -16,7 +16,6 @@ import {
 } from "../../utils/methods";
 import HomeBody from "./HomeBody";
 import { CustomForecast } from "../../types/response/CustomForecast";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
 import { getCityByCoordinates } from "../../utils/apis";
 import { RouteProp } from "@react-navigation/native";
@@ -29,15 +28,7 @@ const HomeScreen = ({
   }>;
 }) => {
   const dataStore = useContext<IDataContextDefault>(DataContext);
-  const {
-    setLanguage,
-    setTempUnit,
-    setFollowedCities,
-    followedCities,
-    setCurrentCity,
-    language,
-    tempUnit,
-  } = dataStore;
+  const { followedCities, setCurrentCity, language, tempUnit } = dataStore;
 
   const scrollRef = useRef<ScrollView>(null);
   const [followedWeathers, setFollowedWeathers] = useState<CustomForecast[]>(
@@ -49,33 +40,6 @@ const HomeScreen = ({
 
   const [followedWeatherIndex, setFollowedWeatherIndex] = useState(0);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const setGlobalState = async () => {
-      try {
-        // await AsyncStorage.setItem(
-        //   "@weatherForecast",
-        //   JSON.stringify({
-        //     language: "en",
-        //     tempUnit: "metric",
-        //     followedCities: [],
-        //   })
-        // );
-
-        // set app setting
-        const globalStateJson = await AsyncStorage.getItem("@weatherForecast");
-        const globalState = JSON.parse(globalStateJson || "");
-
-        setLanguage(globalState.language);
-        setTempUnit(globalState.tempUnit);
-        setFollowedCities(globalState.followedCities);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    setGlobalState();
-  }, []);
 
   useEffect(() => {
     const setCurrentCityWeather = async () => {

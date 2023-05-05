@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     right: 0,
     width: "100%",
     zIndex: 10,
-    height: 96,
+    height: 100,
   },
   homeHeaderContent: {
     flexDirection: "row",
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     paddingTop: 2,
   },
   cityName: {
-    fontWeight: "500",
+    fontWeight: "700",
     fontSize: 18,
     textAlign: "center",
   },

@@ -46,7 +46,7 @@ const HomeHeader = ({
                   : "rgba(255, 255, 255, 0.5)"
               }
               size={8}
-              style={{ paddingHorizontal: 6 }}
+              style={{ paddingHorizontal: 5 }}
             />
           ) : (
             <FontAwesome
@@ -58,7 +58,7 @@ const HomeHeader = ({
                   : "rgba(255, 255, 255, 0.5)"
               }
               size={5}
-              style={{ paddingHorizontal: 6 }}
+              style={{ paddingHorizontal: 5 }}
             />
           );
         })
