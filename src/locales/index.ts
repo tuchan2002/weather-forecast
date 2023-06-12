@@ -32,7 +32,6 @@ const languageData = {
   },
   vi: {
     windSpeed: "Tốc độ gió",
-    rain: "Lượng mưa",
     humidity: "Độ ẩm",
     cloud: "Mây",
     pressure: "Áp suất",
@@ -62,6 +61,37 @@ const languageData = {
     cannotAdd: "Không thể thêm nhiều thành phố",
     toAddANewOne: "Để thêm một thành phố mới, hãy xóa một thành phố đã có.",
   },
+  ja: {
+    windSpeed: "風速",
+    humidity: "湿度",
+    cloud: "雲",
+    pressure: "気圧",
+    visibility: "可視性",
+    Mon: "月",
+    Tue: "火",
+    Wed: "水",
+    Thu: "木",
+    Fri: "金",
+    Sat: "土",
+    Sun: "日",
+    manageCities: "都市を管理",
+    settings: "設定",
+    language: "言語",
+    tempUnit: "温度単位",
+    cancel: "キャンセル",
+    save: "保存",
+    viewOnHomeScreen: "ホームページで表示",
+    added: "追加した",
+    enterLocation: "場所を入力してください",
+    temperature: "温度",
+    noResults: "該当結果はありません",
+    remove: "削除",
+    updating: "アップデート中",
+    addSuccessful: "追加に成功した",
+    removeSuccessful: "削除に成功した",
+    cannotAdd: "これ以上都市を追加できません",
+    toAddANewOne: "新しい都市を追加するには、既に存在する都市を削除します",
+  },
 };
 
 export const translate = (lang: string) => {
@@ -70,6 +100,8 @@ export const translate = (lang: string) => {
       return languageData.en;
     case "vi":
       return languageData.vi;
+    case "ja":
+      return languageData.ja;
     default:
       return languageData.en;
   }
